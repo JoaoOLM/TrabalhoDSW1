@@ -5,23 +5,39 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Vaga {
-    private int id;
-    private Empresa empresa;
-    private String descricao;
-    private BigDecimal remuneracao;
-    private Date dataLimiteInscricao;
-    private StatusVaga status;
-    private Timestamp dataCriacao;
 
     public enum StatusVaga {
         ABERTA,
         FECHADA
     }
 
+    private Long id;
+    private Empresa empresa;
+    private String descricao;
+    private BigDecimal remuneracao;
+    private Date dataLimiteInscricao;
+    private StatusVaga status = StatusVaga.ABERTA;
+    private Timestamp dataCriacao = new Timestamp(System.currentTimeMillis());
+
     public Vaga() {
     }
 
-    public Vaga(int id, Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao, StatusVaga status, Timestamp dataCriacao) {
+    public Vaga(Long id, Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao) {
+        this.id = id;
+        this.empresa = empresa;
+        this.descricao = descricao;
+        this.remuneracao = remuneracao;
+        this.dataLimiteInscricao = dataLimiteInscricao;
+    }
+
+    public Vaga(Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao) {
+        this.empresa = empresa;
+        this.descricao = descricao;
+        this.remuneracao = remuneracao;
+        this.dataLimiteInscricao = dataLimiteInscricao;
+    }
+
+    public Vaga(Long id, Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao, StatusVaga status, Timestamp dataCriacao) {
         this.id = id;
         this.empresa = empresa;
         this.descricao = descricao;
@@ -31,11 +47,11 @@ public class Vaga {
         this.dataCriacao = dataCriacao;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
