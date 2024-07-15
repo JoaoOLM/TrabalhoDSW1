@@ -12,7 +12,7 @@ public class Candidatura {
 
     private Long id;
     private Vaga vaga;
-    private Long profissionalId;
+    private Profissional profissional;
     private String arquivoCurriculo;
     private Timestamp dataCandidatura;
     private Status status;
@@ -20,10 +20,10 @@ public class Candidatura {
     public Candidatura() {
     }
 
-    public Candidatura(Long id, Vaga vaga, Long profissionalId, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {
+    public Candidatura(Long id, Vaga vaga, Profissional profissional, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {
         this.id = id;
         this.vaga = vaga;
-        this.profissionalId = profissionalId;
+        this.profissional = profissional;
         this.arquivoCurriculo = arquivoCurriculo;
         this.dataCandidatura = dataCandidatura;
         this.status = status;
@@ -39,20 +39,20 @@ public class Candidatura {
         this.id = id;
     }
 
-    public Vaga getVagaId() {
+    public Vaga getVaga() {
         return vaga;
     }
 
-    public void setVagaId(Vaga vaga) {
+    public void setVaga(Vaga vaga) {
         this.vaga = vaga;
     }
 
-    public Long getProfissionalId() {
-        return profissionalId;
+    public Profissional getProfissional() {
+        return profissional;
     }
 
-    public void setProfissionalId(Long profissionalId) {
-        this.profissionalId = profissionalId;
+    public void setProfissional(Profissional profissional) {
+        this.profissional = profissional;
     }
 
     public String getArquivoCurriculo() {

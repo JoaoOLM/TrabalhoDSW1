@@ -25,12 +25,12 @@ CREATE TABLE Empresa (
 CREATE TABLE Vaga (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
-    FOREIGN KEY (empresa_id) REFERENCES Empresas(id),
+    FOREIGN KEY (empresa_id) REFERENCES Empresa(id),
     descricao TEXT NOT NULL,
     remuneracao DECIMAL(10, 2),
     data_limite_inscricao DATE NOT NULL,
     status INT NOT NULL,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Candidatura (
@@ -41,6 +41,6 @@ CREATE TABLE Candidatura (
     data_candidatura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status INT NOT NULL DEFAULT 0,
     UNIQUE KEY unique_candidatura (vaga_id, profissional_id),
-    FOREIGN KEY (vaga_id) REFERENCES Vagas(id),
-    FOREIGN KEY (profissional_id) REFERENCES Profissionais(id)
+    FOREIGN KEY (vaga_id) REFERENCES Vaga(id),
+    FOREIGN KEY (profissional_id) REFERENCES Profissional(id)
 );
