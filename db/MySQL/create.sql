@@ -8,7 +8,7 @@ CREATE TABLE Profissional (
     CPF CHAR(11) NOT NULL UNIQUE,
     nome VARCHAR(100) NOT NULL,
     telefone VARCHAR(20),
-    sexo ENUM('M', 'F', 'Outro'),
+    sexo INT NOT NULL,
     data_nascimento DATE
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE Vaga (
     descricao TEXT NOT NULL,
     remuneracao DECIMAL(10, 2),
     data_limite_inscricao DATE NOT NULL,
-    status ENUM('Aberta', 'Fechada') DEFAULT 'Aberta',
+    status INT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE Candidatura (
     profissional_id INT NOT NULL,
     arquivo_curriculo MEDIUMBLOB,
     data_candidatura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Não Selecionado', 'Entrevista', 'Aberto') DEFAULT 'Aberto',
+    status INT NOT NULL DEFAULT 0,
     UNIQUE KEY unique_candidatura (vaga_id, profissional_id),
     FOREIGN KEY (vaga_id) REFERENCES Vagas(id),
     FOREIGN KEY (profissional_id) REFERENCES Profissionais(id)
