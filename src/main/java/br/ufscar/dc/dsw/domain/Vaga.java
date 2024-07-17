@@ -1,6 +1,5 @@
 package br.ufscar.dc.dsw.domain;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -14,7 +13,7 @@ public class Vaga {
     private Long id;
     private Empresa empresa;
     private String descricao;
-    private BigDecimal remuneracao;
+    private double remuneracao;
     private Date dataLimiteInscricao;
     private StatusVaga status = StatusVaga.ABERTA;
     private Timestamp dataCriacao = new Timestamp(System.currentTimeMillis());
@@ -22,7 +21,7 @@ public class Vaga {
     public Vaga() {
     }
 
-    public Vaga(Long id, Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao) {
+    public Vaga(Long id, Empresa empresa, String descricao, double remuneracao, Date dataLimiteInscricao) {
         this.id = id;
         this.empresa = empresa;
         this.descricao = descricao;
@@ -30,14 +29,14 @@ public class Vaga {
         this.dataLimiteInscricao = dataLimiteInscricao;
     }
 
-    public Vaga(Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao) {
+    public Vaga(Empresa empresa, String descricao, double remuneracao, Date dataLimiteInscricao) {
         this.empresa = empresa;
         this.descricao = descricao;
         this.remuneracao = remuneracao;
         this.dataLimiteInscricao = dataLimiteInscricao;
     }
 
-    public Vaga(Long id, Empresa empresa, String descricao, BigDecimal remuneracao, Date dataLimiteInscricao, StatusVaga status, Timestamp dataCriacao) {
+    public Vaga(Long id, Empresa empresa, String descricao, double remuneracao, Date dataLimiteInscricao, StatusVaga status, Timestamp dataCriacao) {
         this.id = id;
         this.empresa = empresa;
         this.descricao = descricao;
@@ -71,11 +70,11 @@ public class Vaga {
         this.descricao = descricao;
     }
 
-    public BigDecimal getRemuneracao() {
+    public double getRemuneracao() {
         return remuneracao;
     }
 
-    public void setRemuneracao(BigDecimal remuneracao) {
+    public void setRemuneracao(double remuneracao) {
         this.remuneracao = remuneracao;
     }
 

@@ -1,6 +1,5 @@
 package br.ufscar.dc.dsw.dao;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +15,23 @@ import br.ufscar.dc.dsw.domain.Empresa;
 
 public class VagaDAO extends GenericDAO {
 
+    public static Vaga setVaga(ResultSet rs) throws SQLException {
+        Vaga vaga = new Vaga();
+
+        try {
+            vaga.setId(rs.getLong("v.id"));
+            vaga.setEmpresa(EmpresaDAO.setEmpresa(rs));
+            vaga.setDescricao(rs.getString("v.descricao"));
+            vaga.setRemuneracao(rs.getDouble("v.remuneracao"));
+            vaga.setStatus(Vaga.StatusVaga.values()[rs.getInt("v.status")]);
+            vaga.setDataCriacao(rs.getTimestamp("v.data_criacao"));
+            vaga.setDataLimiteInscricao(rs.getDate("v.data_limite_inscricao"));
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return vaga;
+    }
+
     public void insert(Vaga vaga) {
         String sql = "INSERT INTO Vaga (empresa_id, descricao, remuneracao, data_limite_inscricao, status, data_criacao) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -25,7 +41,7 @@ public class VagaDAO extends GenericDAO {
 
             statement.setLong(1, vaga.getEmpresa().getId());
             statement.setString(2, vaga.getDescricao());
-            statement.setBigDecimal(3, vaga.getRemuneracao());
+            statement.setDouble(3, vaga.getRemuneracao());
             statement.setDate(4, vaga.getDataLimiteInscricao());
             statement.setString(5, vaga.getStatus().toString());
             statement.setTimestamp(6, vaga.getDataCriacao());
@@ -42,7 +58,7 @@ public class VagaDAO extends GenericDAO {
     public List<Vaga> getAll() {
         List<Vaga> listaVagas = new ArrayList<>();
 
-        String sql = "SELECT v.*, e.* FROM Vaga v JOIN Empresa e ON v.empresa_id = e.id ORDER BY v.id";
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.id_empresa = e.id AND e.id_usuario = u.id";;
 
         try {
             Connection conn = this.getConnection();
@@ -50,25 +66,7 @@ public class VagaDAO extends GenericDAO {
 
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Long id = resultSet.getLong("v.id");
-                Long empresaId = resultSet.getLong("v.empresa_id");
-                String descricao = resultSet.getString("v.descricao");
-                BigDecimal remuneracao = resultSet.getBigDecimal("v.remuneracao");
-                Date dataLimiteInscricao = resultSet.getDate("v.data_limite_inscricao");
-                Integer status = resultSet.getInt("v.status");
-                Timestamp dataCriacao = resultSet.getTimestamp("v.data_criacao");
-
-                Long empresaIdRes = resultSet.getLong("e.id");
-                String email = resultSet.getString("e.email");
-                String senha = resultSet.getString("e.senha");
-                String CNPJ = resultSet.getString("e.CNPJ");
-                String nome = resultSet.getString("e.nome");
-                String descricaoEmpresa = resultSet.getString("e.descricao");
-                String cidade = resultSet.getString("e.cidade");
-
-                Empresa empresa = new Empresa(empresaIdRes, email, senha, CNPJ, nome, descricaoEmpresa, cidade);
-                Vaga vaga = new Vaga(id, empresa, descricao, remuneracao, dataLimiteInscricao, Vaga.StatusVaga.values()[status], dataCriacao);
-                listaVagas.add(vaga);
+                listaVagas.add(setVaga(resultSet));
             }
 
             resultSet.close();
@@ -106,7 +104,7 @@ public class VagaDAO extends GenericDAO {
 
             statement.setLong(1, vaga.getEmpresa().getId());
             statement.setString(2, vaga.getDescricao());
-            statement.setBigDecimal(3, vaga.getRemuneracao());
+            statement.setDouble(3, vaga.getRemuneracao());
             statement.setDate(4, vaga.getDataLimiteInscricao());
             statement.setString(5, vaga.getStatus().toString());
             statement.setTimestamp(6, vaga.getDataCriacao());
@@ -123,7 +121,7 @@ public class VagaDAO extends GenericDAO {
 
     public Vaga get(Long id) {
         Vaga vaga = null;
-        String sql = "SELECT v.*, e.* FROM Vaga v JOIN Empresa e ON v.empresa_id = e.id WHERE v.id = ?";
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.id_empresa = e.id AND e.id_usuario = u.id AND v.id = ?";
 
         try {
             Connection conn = this.getConnection();
@@ -131,25 +129,9 @@ public class VagaDAO extends GenericDAO {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
+
             if (resultSet.next()) {
-                Long vagaId = resultSet.getLong("v.id");
-                Long empresaId = resultSet.getLong("v.empresa_id");
-                String descricao = resultSet.getString("v.descricao");
-                BigDecimal remuneracao = resultSet.getBigDecimal("v.remuneracao");
-                Date dataLimiteInscricao = resultSet.getDate("v.data_limite_inscricao");
-                Integer status = resultSet.getInt("v.status");
-                Timestamp dataCriacao = resultSet.getTimestamp("v.data_criacao");
-
-                Long empresaIdRes = resultSet.getLong("e.id");
-                String email = resultSet.getString("e.email");
-                String senha = resultSet.getString("e.senha");
-                String CNPJ = resultSet.getString("e.CNPJ");
-                String nome = resultSet.getString("e.nome");
-                String descricaoEmpresa = resultSet.getString("e.descricao");
-                String cidade = resultSet.getString("e.cidade");
-
-                Empresa empresa = new Empresa(empresaIdRes, email, senha, CNPJ, nome, descricaoEmpresa, cidade);
-                vaga = new Vaga(vagaId, empresa, descricao, remuneracao, dataLimiteInscricao, Vaga.StatusVaga.values()[status], dataCriacao);
+                vaga = setVaga(resultSet);
             }
 
             resultSet.close();

@@ -2,30 +2,40 @@ package br.ufscar.dc.dsw.domain;
 
 import java.util.Date;
 
-public class Profissional {
+public class Profissional{
     
     public enum Sexo {
         MASCULINO, FEMININO, OUTRO
     }
 
     private Long id;
-    private String email;
-    private String senha;
+    private Usuario usuario;
     private String cpf;
-    private String nome;
     private String telefone;
     private Sexo sexo;
     private Date dataNascimento;
     
     public Profissional() {
+
+    }
+
+    public Profissional(Long id) {
+        this.id = id;
+    }
+
+
+    public Profissional(Usuario usuario, String CPF, String telefone, Sexo sexo, Date dataNascimento) {
+        this.usuario = usuario;
+        this.cpf = CPF;
+        this.telefone = telefone;
+        this.sexo = sexo;
+        this.dataNascimento = dataNascimento;
     }
     
-    public Profissional(Long id, String email, String senha, String cpf, String nome, String telefone, Sexo sexo, Date dataNascimento) {
+    public Profissional(Long id, Usuario usuario, String cPF, String telefone, Sexo sexo, Date dataNascimento) {
         this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.cpf = cpf;
-        this.nome = nome;
+        this.usuario = usuario;
+        cpf = cPF;
         this.telefone = telefone;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
@@ -41,20 +51,12 @@ public class Profissional {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getCpf() {
@@ -63,14 +65,6 @@ public class Profissional {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getTelefone() {

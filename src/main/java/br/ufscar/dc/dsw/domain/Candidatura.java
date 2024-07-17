@@ -14,10 +14,16 @@ public class Candidatura {
     private Vaga vaga;
     private Profissional profissional;
     private String arquivoCurriculo;
-    private Timestamp dataCandidatura;
+    private Timestamp dataCandidatura = new Timestamp(System.currentTimeMillis());
     private Status status;
 
     public Candidatura() {
+    }
+
+    public Candidatura(Vaga vaga, Profissional profissional, String arquivoCurriculo) {
+        this.vaga = vaga;
+        this.profissional = profissional;
+        this.arquivoCurriculo = arquivoCurriculo;
     }
 
     public Candidatura(Long id, Vaga vaga, Profissional profissional, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {

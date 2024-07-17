@@ -13,20 +13,33 @@ import br.ufscar.dc.dsw.domain.Profissional;
 
 public class ProfissionalDAO extends GenericDAO {
 
+    public static Profissional setProfissional(ResultSet rs) throws SQLException {
+        Profissional profissional = new Profissional();
+        try {
+            profissional.setId(rs.getLong("p.id"));
+            profissional.setUsuario(UsuarioDAO.setUsuario(rs));
+            profissional.setCpf(rs.getString("p.cpf"));
+            profissional.setTelefone(rs.getString("p.telefone"));
+            profissional.setSexo(Profissional.Sexo.values()[rs.getInt("p.sexo")]);
+            profissional.setDataNascimento(rs.getDate("p.data_nascimento"));
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return profissional;
+    }
+
     public void insert(Profissional profissional) {
-        String sql = "INSERT INTO Profissional (email, senha, CPF, nome, telefone, sexo, data_nascimento) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO profissional (id_usuario, cpf, telefone, sexo, data_nascimento) VALUES (?, ?, ?, ?, ?)";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setString(1, profissional.getEmail());
-            statement.setString(2, profissional.getSenha());
-            statement.setString(3, profissional.getCpf());
-            statement.setString(4, profissional.getNome());
-            statement.setString(5, profissional.getTelefone());
-            statement.setInt(6, profissional.getSexo().ordinal());  
-            statement.setDate(7, new Date(profissional.getDataNascimento().getTime()));
+            statement.setLong(1, profissional.getUsuario().getId());
+            statement.setString(2, profissional.getCpf());
+            statement.setString(3, profissional.getTelefone());
+            statement.setInt(4, profissional.getSexo().ordinal());  
+            statement.setDate(5, new Date(profissional.getDataNascimento().getTime()));
 
             statement.executeUpdate();
 
@@ -45,20 +58,10 @@ public class ProfissionalDAO extends GenericDAO {
         try {
             Connection conn = this.getConnection();
             Statement statement = conn.createStatement();
-
             ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String email = resultSet.getString("email");
-                String senha = resultSet.getString("senha");
-                String cpf = resultSet.getString("CPF");
-                String nome = resultSet.getString("nome");
-                String telefone = resultSet.getString("telefone");
-                Integer sexo = resultSet.getInt("sexo");
-                java.sql.Date dataNascimento = resultSet.getDate("data_nascimento");
 
-                Profissional profissional = new Profissional(id, email, senha, cpf, nome, telefone, Profissional.Sexo.values()[sexo], dataNascimento);
-                listaProfissionais.add(profissional);
+            while (resultSet.next()) {
+                listaProfissionais.add(setProfissional(resultSet));
             }
 
             resultSet.close();
@@ -88,20 +91,17 @@ public class ProfissionalDAO extends GenericDAO {
     }
 
     public void update(Profissional profissional) {
-        String sql = "UPDATE Profissional SET email = ?, senha = ?, CPF = ?, nome = ?, telefone = ?, sexo = ?, data_nascimento = ? WHERE id = ?";
+        String sql = "UPDATE Profissional SET CPF = ?, telefone = ?, sexo = ?, data_nascimento = ? WHERE id = ?";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setString(1, profissional.getEmail());
-            statement.setString(2, profissional.getSenha());
-            statement.setString(3, profissional.getCpf());
-            statement.setString(4, profissional.getNome());
-            statement.setString(5, profissional.getTelefone());
-            statement.setInt(6, profissional.getSexo().ordinal());
-            statement.setDate(7, new Date(profissional.getDataNascimento().getTime()));
-            statement.setLong(8, profissional.getId());
+            statement.setString(1, profissional.getCpf());
+            statement.setString(2, profissional.getTelefone());
+            statement.setInt(3, profissional.getSexo().ordinal());
+            statement.setDate(4, new Date(profissional.getDataNascimento().getTime()));
+            statement.setLong(5, profissional.getId());
 
             statement.executeUpdate();
 
@@ -120,19 +120,11 @@ public class ProfissionalDAO extends GenericDAO {
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String email = resultSet.getString("email");
-                String senha = resultSet.getString("senha");
-                String cpf = resultSet.getString("CPF");
-                String nome = resultSet.getString("nome");
-                String telefone = resultSet.getString("telefone");
-                Integer sexo = resultSet.getInt("sexo");
-                java.sql.Date dataNascimento = resultSet.getDate("data_nascimento");
 
-                profissional = new Profissional(id, email, senha, cpf, nome, telefone, Profissional.Sexo.values()[sexo], dataNascimento);
+            if (resultSet.next()) {
+                profissional = setProfissional(resultSet);
             }
 
             resultSet.close();
