@@ -16,8 +16,24 @@ import br.ufscar.dc.dsw.domain.Vaga;
 
 public class CandidaturaDAO extends GenericDAO {
 
+    public static Candidatura setCandidatura(ResultSet rs) throws SQLException {
+        Candidatura candidatura = new Candidatura();
+
+        try {
+            candidatura.setId(rs.getLong("c.id"));
+            candidatura.setProfissional(ProfissionalDAO.setProfissional(rs));
+            candidatura.setVaga(VagaDAO.setVaga(rs));
+            candidatura.setArquivoCurriculo(rs.getString("c.arquivo_curriculo"));
+            candidatura.setDataCandidatura(rs.getTimestamp("c.data_candidatura"));
+            candidatura.setStatus(Candidatura.Status.values()[rs.getInt("c.status")]);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+        return candidatura;
+    }
+
     public void insert(Candidatura candidatura) {
-        String sql = "INSERT INTO Candidatura (vaga_id, profissional_id, arquivo_curriculo, data_candidatura, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Candidatura (vaga_id, profissional_id, arquivo_curriculo, status) VALUES (?, ?, ?, ?, ?)";
 
         try {
             Connection conn = this.getConnection();
@@ -26,8 +42,7 @@ public class CandidaturaDAO extends GenericDAO {
             statement.setLong(1, candidatura.getVaga().getId());
             statement.setLong(2, candidatura.getProfissional().getId());
             statement.setString(3, candidatura.getArquivoCurriculo());
-            statement.setTimestamp(4, new java.sql.Timestamp(candidatura.getDataCandidatura().getTime())); 
-            statement.setInt(5, candidatura.getStatus().ordinal());  
+            statement.setInt(4, candidatura.getStatus().ordinal());  
 
             statement.executeUpdate();
 
@@ -41,8 +56,7 @@ public class CandidaturaDAO extends GenericDAO {
     public List<Candidatura> getAll() {
         List<Candidatura> listaCandidaturas = new ArrayList<>();
 
-        String sql = "SELECT c.*, v.*, p.* FROM Candidatura c JOIN Vaga v ON c.vaga_id = v.id " +
-                     " JOIN Profissional p ON c.profissional_id = p.id ORDER BY c.id";
+        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.id_empresa = e.id AND c.id_vaga = v.id AND c.id_profissional = p.id";
 
         try {
             Connection conn = this.getConnection();
@@ -50,36 +64,7 @@ public class CandidaturaDAO extends GenericDAO {
 
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Long candidaturaId = resultSet.getLong("c.id");
-                String arquivoCurriculo = resultSet.getString("c.arquivo_curriculo");
-                Timestamp dataCandidatura = resultSet.getTimestamp("c.data_candidatura");
-                int status = resultSet.getInt("c.status");
-
-                // Dados da Vaga
-                Long vagaId = resultSet.getLong("v.id");
-                Long empresaId = resultSet.getLong("v.empresa_id");
-                String descricaoVaga = resultSet.getString("v.descricao");
-                BigDecimal remuneracao = resultSet.getBigDecimal("v.remuneracao");
-                java.sql.Date dataLimiteInscricao = resultSet.getDate("v.data_limite_inscricao");
-                int statusVaga = resultSet.getInt("v.status");
-                Timestamp dataCriacao = resultSet.getTimestamp("v.data_criacao");
-
-                Vaga vaga = new Vaga(vagaId, null, descricaoVaga, remuneracao, dataLimiteInscricao, Vaga.StatusVaga.values()[statusVaga], dataCriacao);
-
-                // Dados do Profissional
-                Long profissionalId = resultSet.getLong("p.id");
-                String email = resultSet.getString("p.email");
-                String senha = resultSet.getString("p.senha");
-                String cpf = resultSet.getString("p.CPF");
-                String nome = resultSet.getString("p.nome");
-                String telefone = resultSet.getString("p.telefone");
-                int sexo = resultSet.getInt("p.sexo");
-                java.sql.Date dataNascimento = resultSet.getDate("p.data_nascimento");
-
-                Profissional profissional = new Profissional(profissionalId, email, senha, cpf, nome, telefone, Profissional.Sexo.values()[sexo], dataNascimento);
-                
-                Candidatura candidatura = new Candidatura(candidaturaId, vaga, profissional, arquivoCurriculo, dataCandidatura, Candidatura.Status.values()[status]);
-                listaCandidaturas.add(candidatura);
+                listaCandidaturas.add(setCandidatura(resultSet));
             }
 
             resultSet.close();
@@ -134,8 +119,7 @@ public class CandidaturaDAO extends GenericDAO {
     public Candidatura get(Long id) {
         Candidatura candidatura = null;
     
-        String sql = "SELECT c.*, v.*, p.* FROM Candidatura c JOIN Vaga v ON c.vaga_id = v.id " +
-                     "JOIN Profissional p ON c.profissional_id = p.id WHERE c.id = ?";
+        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.id_empresa = e.id AND c.id_vaga = v.id AND c.id_profissional = p.id AND c.id = ?";
     
         try {
             Connection conn = this.getConnection();
@@ -144,20 +128,7 @@ public class CandidaturaDAO extends GenericDAO {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Long candidaturaId = resultSet.getLong("c.id");
-                String arquivoCurriculo = resultSet.getString("c.arquivo_curriculo");
-                Timestamp dataCandidatura = resultSet.getTimestamp("c.data_candidatura");
-                int status = resultSet.getInt("c.status");
-
-                // Dados da Vaga
-                Long vagaId = resultSet.getLong("v.id");
-                Vaga vaga = new VagaDAO().get(vagaId);
-                
-                // Dados do Profissional
-                Long profissionalId = resultSet.getLong("p.id");
-                Profissional profissional = new ProfissionalDAO().get(profissionalId);
-        
-                candidatura = new Candidatura(candidaturaId, vaga, profissional, arquivoCurriculo, dataCandidatura, Candidatura.Status.values()[status]);
+                candidatura = setCandidatura(resultSet);
             }
     
             resultSet.close();

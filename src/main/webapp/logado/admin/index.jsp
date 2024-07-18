@@ -4,9 +4,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Lista Smartphones</title>
+        <title>Menu do Sistema</title>
     </head>
     <body>
-        <a href="smartphones">CRUD smartphones</a>
+        <h1>Página do Administrador</h1>
+        <p>Olá</p>
     </body>
 </html>
