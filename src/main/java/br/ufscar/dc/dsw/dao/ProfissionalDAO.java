@@ -74,7 +74,7 @@ public class ProfissionalDAO extends GenericDAO {
     }
 
     public void delete(Profissional profissional) {
-        String sql = "DELETE FROM Profissional WHERE id = ?";
+        String sql = "DELETE u FROM usuario u JOIN profissional p ON u.id = p.id_usuario WHERE p.id = ?";
 
         try {
             Connection conn = this.getConnection();

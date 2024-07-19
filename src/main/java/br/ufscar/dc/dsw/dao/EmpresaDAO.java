@@ -71,7 +71,7 @@ public class EmpresaDAO extends GenericDAO {
     }
 
     public void delete(Empresa empresa) {
-        String sql = "DELETE FROM Empresa WHERE id = ?";
+        String sql = "DELETE u FROM usuario u JOIN empresa e ON u.id = e.id_usuario WHERE e.id = ?]";
 
         try {
             Connection conn = this.getConnection();
