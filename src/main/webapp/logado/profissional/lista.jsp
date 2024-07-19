@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    <%@ page isELIgnored="false"%>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-            <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+    <%@ page isELIgnored="false" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+            <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
                 <html>
                 <fmt:bundle basename="message">
@@ -9,7 +9,7 @@
                     <head>
                         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                         <title>
-                            Empresas
+                            Profissionais
                         </title>
                         <link href="${pageContext.request.contextPath}/index.css" rel="stylesheet" type="text/css" />
                     </head>
@@ -18,7 +18,7 @@
                         <div class="right">
                             <p style="margin-right: 20px;">Olá, ${sessionScope.usuarioLogado.nome}! </p>
                             <a href="${pageContext.request.contextPath}/logout.jsp" class="sair">
-                                LOGOUT
+                               LOGOUT
                             </a>
                         </div>
 
@@ -27,40 +27,40 @@
 
                                 <div style="margin-top: 2rem;">
                                     <div class="title">
-                                       Lista de empresas
+                                       Lista de profissionais
                                     </div>
                                     <table border="1">
                                         <tr>
                                             <th>
-                                                Nome da empresa
+                                                Nome
                                             </th>
                                             <th>
-                                                Email
+                                                E-mail
                                             </th>
                                             <th>
-                                                CNPJ
+                                                CPF
                                             </th>
                                             <th>
-                                               Descricao
+                                                Sexo
                                             </th>
                                             <th>
-                                                Cidade
+                                                Data de Nascimento
                                             </th>
                                             <th>
                                                 Ações
                                             </th>
                                         </tr>
 
-                                        <c:forEach var="empresa" items="${requestScope.listaEmpresas}">
+                                        <c:forEach var="profissional" items="${requestScope.listaProfissionais}">
                                             <tr>
-                                                <td>${empresa.usuario.nome}</td>
-                                                <td>${empresa.usuario.email}</td>
-                                                <td>${empresa.CNPJ}</td>
-                                                <td>${empresa.descricao}</td>
-                                                <td>${empresa.cidade}</td>
+                                                <td>${profissional.usuario.nome}</td>
+                                                <td>${profissional.usuario.email}</td>
+                                                <td>${profissional.cpf}</td>
+                                                <td>${profissional.sexo}</td>
+                                                <td>${profissional.dataNascimento}</td>
                                                 <td>
-                                                    <a href="/<%= contextPath%>/empresas/edicao?id=${empresa.id}">
-                                                        Editar
+                                                    <a href="/<%= contextPath%>/profissionais/edicao?id=${profissional.id}">
+                                                       Editar
                                                     </a>
                                                 </td>
                                             </tr>
@@ -68,7 +68,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <a href="${pageContext.request.contextPath}/empresas/cadastro" class="button">
+                            <a href="${pageContext.request.contextPath}/profissionais/cadastro" class="button">
                                 Criar
                             </a>
                     </body>
