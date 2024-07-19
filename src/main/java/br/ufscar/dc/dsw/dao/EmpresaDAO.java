@@ -50,7 +50,7 @@ public class EmpresaDAO extends GenericDAO {
     public List<Empresa> getAll() {
         List<Empresa> listaEmpresas = new ArrayList<>();
 
-        String sql = "SELECT * FROM Empresa ORDER BY id";
+        String sql =  "SELECT * FROM empresa e, usuario u WHERE e.id_usuario = u.id";
 
         try {
             Connection conn = this.getConnection();
@@ -111,7 +111,7 @@ public class EmpresaDAO extends GenericDAO {
     public Empresa get(Long id) {
         Empresa empresa = null;
 
-        String sql = "SELECT * FROM Empresa WHERE id = ?";
+        String sql = "SELECT * FROM empresa e, usuario u WHERE e.id_usuario = u.id AND e.id = ?";
 
         try {
             Connection conn = this.getConnection();

@@ -53,7 +53,7 @@ public class ProfissionalDAO extends GenericDAO {
     public List<Profissional> getAll() {
         List<Profissional> listaProfissionais = new ArrayList<>();
 
-        String sql = "SELECT * FROM Profissional ORDER BY id";
+        String sql = "SELECT * FROM profissional p, usuario u WHERE p.id_usuario = u.id";
 
         try {
             Connection conn = this.getConnection();
@@ -115,7 +115,7 @@ public class ProfissionalDAO extends GenericDAO {
     public Profissional get(Long id) {
         Profissional profissional = null;
 
-        String sql = "SELECT * FROM Profissional WHERE id = ?";
+        String sql = "SELECT * FROM profissional p, usuario u WHERE p.id_usuario = u.id AND p.id = ?";
 
         try {
             Connection conn = this.getConnection();
