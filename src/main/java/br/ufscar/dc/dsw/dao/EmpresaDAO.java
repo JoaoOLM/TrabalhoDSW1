@@ -132,4 +132,29 @@ public class EmpresaDAO extends GenericDAO {
         }
         return empresa;
     }
+
+    public Empresa getById_Empresa(Long id_usuario) {
+        Empresa empresa = null;
+
+        String sql = "SELECT * FROM empresa e, usuario u WHERE e.id_usuario = u.id AND e.id_usuario = ?";
+
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id_usuario);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                empresa = setEmpresa(resultSet);
+            }
+
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return empresa;
+    }
 }

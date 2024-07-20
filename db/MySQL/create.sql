@@ -34,7 +34,6 @@ CREATE TABLE vaga (
     descricao TEXT NOT NULL,
     remuneracao DECIMAL(10, 2),
     data_limite_inscricao DATE NOT NULL,
-    status INT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (empresa_id) REFERENCES empresa(id) ON DELETE CASCADE
 );
