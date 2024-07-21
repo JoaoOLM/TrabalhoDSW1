@@ -51,12 +51,20 @@ public class IndexController extends HttpServlet {
 				Usuario usuario = usuario_dao.getByEmail(login);
                 System.out.println(usuario);                
                 if (usuario != null) {
-                    Empresa empresa = empresa_dao.get(usuario.getId());
-                    Profissional profissional = profissional_dao.get(usuario.getId());
+                    Empresa empresa = empresa_dao.getById_Empresa(usuario.getId());
+                    Profissional profissional = profissional_dao.getById_usuario(usuario.getId());
 					if (usuario.getSenha().equals(senha)) {
 						request.getSession().setAttribute("usuarioLogado", usuario);
                         if (usuario.isAdmin()){
 						    response.sendRedirect("admin/");
+                        }
+						else if (empresa != null){ 
+                            request.getSession().setAttribute("empresaLogada", empresa);
+                            response.sendRedirect("vagasempresa/");
+                        }
+                        else if (profissional != null){
+                            request.getSession().setAttribute("profissionalLogado", profissional);
+                            response.sendRedirect("vagas/");
                         }
                         return;
 					} else {

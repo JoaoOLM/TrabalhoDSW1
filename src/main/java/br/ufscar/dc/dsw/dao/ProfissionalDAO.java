@@ -53,7 +53,7 @@ public class ProfissionalDAO extends GenericDAO {
     public List<Profissional> getAll() {
         List<Profissional> listaProfissionais = new ArrayList<>();
 
-        String sql = "SELECT * FROM Profissional ORDER BY id";
+        String sql = "SELECT * FROM profissional p, usuario u WHERE p.id_usuario = u.id";
 
         try {
             Connection conn = this.getConnection();
@@ -74,7 +74,7 @@ public class ProfissionalDAO extends GenericDAO {
     }
 
     public void delete(Profissional profissional) {
-        String sql = "DELETE FROM Profissional WHERE id = ?";
+        String sql = "DELETE u FROM usuario u JOIN profissional p ON u.id = p.id_usuario WHERE p.id = ?";
 
         try {
             Connection conn = this.getConnection();
@@ -115,12 +115,36 @@ public class ProfissionalDAO extends GenericDAO {
     public Profissional get(Long id) {
         Profissional profissional = null;
 
-        String sql = "SELECT * FROM Profissional WHERE id = ?";
+        String sql = "SELECT * FROM profissional p, usuario u WHERE p.id_usuario = u.id AND p.id = ?";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                profissional = setProfissional(resultSet);
+            }
+
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return profissional;
+    }
+
+    public Profissional getById_usuario(Long id_usuario) {
+        Profissional profissional = null;
+
+        String sql = "SELECT * FROM profissional p, usuario u WHERE p.id_usuario = u.id AND p.id_usuario = ?";
+
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setLong(1, id_usuario);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {

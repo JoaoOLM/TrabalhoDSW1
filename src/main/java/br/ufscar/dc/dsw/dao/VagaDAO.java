@@ -5,13 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.ufscar.dc.dsw.domain.Vaga;
-import br.ufscar.dc.dsw.domain.Empresa;
 
 public class VagaDAO extends GenericDAO {
 
@@ -23,7 +20,6 @@ public class VagaDAO extends GenericDAO {
             vaga.setEmpresa(EmpresaDAO.setEmpresa(rs));
             vaga.setDescricao(rs.getString("v.descricao"));
             vaga.setRemuneracao(rs.getDouble("v.remuneracao"));
-            vaga.setStatus(Vaga.StatusVaga.values()[rs.getInt("v.status")]);
             vaga.setDataCriacao(rs.getTimestamp("v.data_criacao"));
             vaga.setDataLimiteInscricao(rs.getDate("v.data_limite_inscricao"));
         } catch (SQLException e) {
@@ -33,7 +29,7 @@ public class VagaDAO extends GenericDAO {
     }
 
     public void insert(Vaga vaga) {
-        String sql = "INSERT INTO Vaga (empresa_id, descricao, remuneracao, data_limite_inscricao, status, data_criacao) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Vaga (empresa_id, descricao, remuneracao, data_limite_inscricao, data_criacao) VALUES (?, ?, ?, ?, ?)";
 
         try {
             Connection conn = this.getConnection();
@@ -43,8 +39,7 @@ public class VagaDAO extends GenericDAO {
             statement.setString(2, vaga.getDescricao());
             statement.setDouble(3, vaga.getRemuneracao());
             statement.setDate(4, vaga.getDataLimiteInscricao());
-            statement.setString(5, vaga.getStatus().toString());
-            statement.setTimestamp(6, vaga.getDataCriacao());
+            statement.setTimestamp(5, vaga.getDataCriacao());
 
             statement.executeUpdate();
 
@@ -58,7 +53,7 @@ public class VagaDAO extends GenericDAO {
     public List<Vaga> getAll() {
         List<Vaga> listaVagas = new ArrayList<>();
 
-        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.id_empresa = e.id AND e.id_usuario = u.id";;
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.empresa_id = e.id AND e.id_usuario = u.id";;
 
         try {
             Connection conn = this.getConnection();
@@ -96,7 +91,7 @@ public class VagaDAO extends GenericDAO {
     }
 
     public void update(Vaga vaga) {
-        String sql = "UPDATE Vaga SET empresa_id = ?, descricao = ?, remuneracao = ?, data_limite_inscricao = ?, status = ?, data_criacao = ? WHERE id = ?";
+        String sql = "UPDATE Vaga SET empresa_id = ?, descricao = ?, remuneracao = ?, data_limite_inscricao = ?, data_criacao = ? WHERE id = ?";
 
         try {
             Connection conn = this.getConnection();
@@ -106,9 +101,8 @@ public class VagaDAO extends GenericDAO {
             statement.setString(2, vaga.getDescricao());
             statement.setDouble(3, vaga.getRemuneracao());
             statement.setDate(4, vaga.getDataLimiteInscricao());
-            statement.setString(5, vaga.getStatus().toString());
-            statement.setTimestamp(6, vaga.getDataCriacao());
-            statement.setLong(7, vaga.getId());
+            statement.setTimestamp(5, vaga.getDataCriacao());
+            statement.setLong(6, vaga.getId());
 
             statement.executeUpdate();
 
@@ -121,7 +115,7 @@ public class VagaDAO extends GenericDAO {
 
     public Vaga get(Long id) {
         Vaga vaga = null;
-        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.id_empresa = e.id AND e.id_usuario = u.id AND v.id = ?";
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.empresa_id = e.id AND e.id_usuario = u.id AND v.id = ?";
 
         try {
             Connection conn = this.getConnection();
@@ -141,5 +135,30 @@ public class VagaDAO extends GenericDAO {
             throw new RuntimeException(e);
         }
         return vaga;
+    }
+
+    public List<Vaga> getAllVagasByEmpresa(Long id) {
+        List<Vaga> listaVagas = new ArrayList<>();
+
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.empresa_id = e.id AND e.id_usuario = u.id AND e.id = ?";
+
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                listaVagas.add(setVaga(resultSet));
+            }
+
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaVagas;
     }
 }
