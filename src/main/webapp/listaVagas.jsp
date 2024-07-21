@@ -30,7 +30,18 @@
                                 <div class="title">
                                     <fmt:message key="vagasAbertasLista" />
                                 </div>
-                                <table border="1">
+                                <!-- Formulário para filtrar por cidade -->
+                                <form action="${pageContext.request.contextPath}/index.jsp" method="get">
+                                    <label for="cidade">Filtrar por cidade:</label>
+                                    <select id="cidade" name="cidade">
+                                        <option value="">--Selecione uma cidade--</option>
+                                        <c:forEach var="cidade" items="${cidades}">
+                                            <option value="${cidade}" ${param.cidade == cidade ? 'selected' : ''}>${cidade}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <button type="submit">Filtrar</button>
+                                </form>                              
+                                <table border="1" style="margin-top: 20px;">
                                     <tr>
                                         <th>
                                             <fmt:message key="vaga.empresa" /> </th>
