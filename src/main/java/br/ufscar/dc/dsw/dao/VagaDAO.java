@@ -161,4 +161,44 @@ public class VagaDAO extends GenericDAO {
         }
         return listaVagas;
     }
+
+    public List<Vaga> getAllOpenVagas() {
+        List<Vaga> listaVagas = new ArrayList<>();
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.empresa_id = e.id AND e.id_usuario = u.id AND DATE(v.data_limite_inscricao) >= CURDATE()";
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                listaVagas.add(setVaga(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaVagas;
+    }
+
+    public List<Vaga> getAllOpenAvailable(Long idProfissional) {
+        List<Vaga> listaVagas = new ArrayList<>();
+        String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.empresa_id = e.id AND e.id_usuario = u.id AND DATE(v.data_limite_inscricao) >= CURDATE() AND v.id NOT IN (SELECT vaga.id FROM vaga, candidatura WHERE vaga.id = candidatura.vaga_id AND candidatura.profissional_id = ?)";
+        
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setLong(1, idProfissional);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                listaVagas.add(setVaga(resultSet));
+            }
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaVagas;
+    }
 }

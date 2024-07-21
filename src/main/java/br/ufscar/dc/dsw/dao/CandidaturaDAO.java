@@ -53,29 +53,6 @@ public class CandidaturaDAO extends GenericDAO {
         }
     }
 
-    public List<Candidatura> getAll() {
-        List<Candidatura> listaCandidaturas = new ArrayList<>();
-
-        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.empresa_id = e.id AND c.id_vaga = v.id AND c.id_profissional = p.id";
-
-        try {
-            Connection conn = this.getConnection();
-            Statement statement = conn.createStatement();
-
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                listaCandidaturas.add(setCandidatura(resultSet));
-            }
-
-            resultSet.close();
-            statement.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return listaCandidaturas;
-    }
-
     public void delete(Candidatura candidatura) {
         String sql = "DELETE FROM Candidatura WHERE id = ?";
 
@@ -119,7 +96,7 @@ public class CandidaturaDAO extends GenericDAO {
     public Candidatura get(Long id) {
         Candidatura candidatura = null;
     
-        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.empresa_id = e.id AND c.id_vaga = v.id AND c.id_profissional = p.id AND c.id = ?";
+        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.empresa_id = e.id AND c.vaga_id = v.id AND c.profissional_id = p.id AND c.id = ?";
     
         try {
             Connection conn = this.getConnection();
@@ -138,6 +115,54 @@ public class CandidaturaDAO extends GenericDAO {
             throw new RuntimeException(e);
         }
         return candidatura;
+    }
+
+    
+    public List<Candidatura> getAll() {
+        List<Candidatura> listaCandidaturas = new ArrayList<>();
+
+        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.empresa_id = e.id AND c.vaga_id = v.id AND c.profissional_id = p.id";
+
+        try {
+            Connection conn = this.getConnection();
+            Statement statement = conn.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                listaCandidaturas.add(setCandidatura(resultSet));
+            }
+
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaCandidaturas;
+    }
+
+    public List<Candidatura> getAllByProfissional(Long id) {
+        List<Candidatura> listaCandidaturas = new ArrayList<>();
+
+        String sql =  "SELECT * FROM candidatura c, profissional p, usuario u, vaga v, empresa e, usuario ue WHERE u.id = p.id_usuario AND ue. id = e.id_usuario AND v.empresa_id = e.id AND c.vaga_id = v.id AND c.profissional_id = p.id AND p.id = ?";
+
+        try {
+            Connection conn = this.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                listaCandidaturas.add(setCandidatura(resultSet));
+            }
+
+            resultSet.close();
+            statement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaCandidaturas;
     }
     
 }
