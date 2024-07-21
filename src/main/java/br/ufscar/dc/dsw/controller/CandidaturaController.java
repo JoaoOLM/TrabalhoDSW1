@@ -1,6 +1,15 @@
 
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.dao.CandidaturaDAO;
+import br.ufscar.dc.dsw.dao.EmpresaDAO;
+import br.ufscar.dc.dsw.dao.VagaDAO;
+import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.Vaga;
+import br.ufscar.dc.dsw.domain.Candidatura;
+import br.ufscar.dc.dsw.domain.Profissional;
+import br.ufscar.dc.dsw.util.Erro;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,15 +19,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import br.ufscar.dc.dsw.dao.CandidaturaDAO;
-import br.ufscar.dc.dsw.dao.EmpresaDAO;
-import br.ufscar.dc.dsw.dao.VagaDAO;
-import br.ufscar.dc.dsw.domain.Candidatura;
-import br.ufscar.dc.dsw.domain.Profissional;
-import br.ufscar.dc.dsw.domain.Usuario;
-import br.ufscar.dc.dsw.domain.Vaga;
-import br.ufscar.dc.dsw.util.Erro;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import static br.ufscar.dc.dsw.Constants.*;
 
 @WebServlet(urlPatterns = "/candidatura/*")
 public class CandidaturaController extends HttpServlet {
@@ -61,9 +65,9 @@ public class CandidaturaController extends HttpServlet {
                 // case "/cadastrar":
                 //     apresentaFormCadastro(request, response);
                 //     break;
-                // case "/inserir":
-                //     inserir(request, response);
-                //     break;
+                case "/inserir":
+                    inserir(request, response);
+                    break;
                 // case "/remover":
                 //     remover(request, response);
                 //     break;
@@ -115,7 +119,7 @@ public class CandidaturaController extends HttpServlet {
 
         List<Candidatura> listaCandidaturas = candidaturaDAO.getAllByProfissional(profissional.getId());
         request.setAttribute("listaCandidaturas", listaCandidaturas);
-
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/lista.jsp");
         dispatcher.forward(request, response);
     }
@@ -129,5 +133,59 @@ public class CandidaturaController extends HttpServlet {
         request.setAttribute("vaga", vaga);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/formulario.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void inserir(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+
+        Profissional profissional = (Profissional) request.getSession().getAttribute("profissionalLogado");
+
+        if (ServletFileUpload.isMultipartContent(request)) {
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			factory.setSizeThreshold(MEMORY_THRESHOLD);
+			factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setFileSizeMax(MAX_FILE_SIZE);
+			upload.setSizeMax(MAX_REQUEST_SIZE);
+			String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) {
+				uploadDir.mkdir();
+			}
+
+			try {
+				List<FileItem> formItems = upload.parseRequest(request);
+                Vaga vaga = null;
+                String fileName = null;
+                if (formItems != null && formItems.size() > 0) {
+					for (FileItem item : formItems) {
+						if (!item.isFormField()) {
+							String originalFileName = new File(item.getName()).getName();
+                            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                            fileName = profissional.getId() + fileExtension;
+                            String filePath = uploadPath + File.separator + fileName;
+                            File storeFile = new File(filePath);
+                            item.write(storeFile);
+                            request.getSession().setAttribute("message", "File " + fileName + " has uploaded successfully!");
+						} else {
+                            String fieldName = item.getFieldName();
+                            String fieldValue = item.getString();
+
+                            if (fieldName.equals("idVaga")) {
+                                Long idVaga = Long.parseLong(fieldValue);
+                                vaga = vagaDAO.get(idVaga);
+                            }
+                        }
+					}
+                    Candidatura candidatura = new Candidatura(vaga, profissional, fileName);
+                    candidaturaDAO.insert(candidatura);
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/lista.jsp");
+                    dispatcher.forward(request, response);
+				}
+			} catch (Exception ex) {
+				request.getSession().setAttribute("message", "There was an error: " + ex.getMessage());
+			}
+		}
     }
 }
