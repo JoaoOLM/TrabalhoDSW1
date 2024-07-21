@@ -9,5 +9,14 @@
     <body>
         <h1>Página do Administrador</h1>
         <p>Olá</p>
+        <a href="${pageContext.request.contextPath}/usuarios" class="link">
+            Usuarios
+        </a>
+        <a href="${pageContext.request.contextPath}/empresas" class="link">
+            Empresas
+        </a>
+        <a href="${pageContext.request.contextPath}/profissionais" class="link">
+            Profissionais
+        </a>
     </body>
 </html>

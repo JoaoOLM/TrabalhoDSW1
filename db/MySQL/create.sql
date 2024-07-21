@@ -16,7 +16,7 @@ CREATE TABLE profissional (
     telefone VARCHAR(20),
     sexo INT NOT NULL,
     data_nascimento DATE,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
 
 CREATE TABLE empresa (
@@ -25,7 +25,7 @@ CREATE TABLE empresa (
     CNPJ CHAR(14) NOT NULL UNIQUE,
     descricao TEXT,
     cidade VARCHAR(100),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
 
 CREATE TABLE vaga (
@@ -34,9 +34,8 @@ CREATE TABLE vaga (
     descricao TEXT NOT NULL,
     remuneracao DECIMAL(10, 2),
     data_limite_inscricao DATE NOT NULL,
-    status INT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (empresa_id) REFERENCES empresa(id)
+    FOREIGN KEY (empresa_id) REFERENCES empresa(id) ON DELETE CASCADE
 );
 
 CREATE TABLE candidatura (
@@ -47,8 +46,8 @@ CREATE TABLE candidatura (
     data_candidatura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status INT NOT NULL DEFAULT 0,
     UNIQUE KEY unique_candidatura (vaga_id, profissional_id),
-    FOREIGN KEY (vaga_id) REFERENCES vaga(id),
-    FOREIGN KEY (profissional_id) REFERENCES profissional(id)
+    FOREIGN KEY (vaga_id) REFERENCES vaga(id) ON DELETE CASCADE,
+    FOREIGN KEY (profissional_id) REFERENCES profissional(id) ON DELETE CASCADE
 );
 
 INSERT INTO usuario (email, nome, senha, is_admin) VALUES ('teste@gmail.com', 'teste', 'teste', 1);

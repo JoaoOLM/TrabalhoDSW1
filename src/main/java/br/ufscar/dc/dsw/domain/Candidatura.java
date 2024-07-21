@@ -15,7 +15,7 @@ public class Candidatura {
     private Profissional profissional;
     private String arquivoCurriculo;
     private Timestamp dataCandidatura = new Timestamp(System.currentTimeMillis());
-    private Status status;
+    private Status status = Status.ABERTO;
 
     public Candidatura() {
     }
@@ -26,8 +26,7 @@ public class Candidatura {
         this.arquivoCurriculo = arquivoCurriculo;
     }
 
-    public Candidatura(Long id, Vaga vaga, Profissional profissional, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {
-        this.id = id;
+    public Candidatura(Vaga vaga, Profissional profissional, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {
         this.vaga = vaga;
         this.profissional = profissional;
         this.arquivoCurriculo = arquivoCurriculo;
