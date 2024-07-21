@@ -13,8 +13,6 @@
     <link href="${pageContext.request.contextPath}/layout.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <a href="mudaLingua?lingua=pt"><img src="images/Brasil.gif" width="20"></a>
-    <a href="mudaLingua?lingua=en"><img src="images/EstadosUnidos.gif" width="20"></a>
     <h1><fmt:message key="page.label" /></h1>   
     <c:if test="${mensagens.existeErros}">
         <div id="erro">
