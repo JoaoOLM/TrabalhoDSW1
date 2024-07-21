@@ -34,7 +34,7 @@
                     <label for="descricao"> <fmt:message key="vaga.descricao" /> </label>
                 </td>
                 <td>
-                    <input type="text" id="descricao" name="descricao" value="${vaga.descricao}" />
+                    <input required type="text" id="descricao" name="descricao" value="${vaga.descricao}" />
                 </td>
             </tr>
             <tr>
@@ -42,7 +42,7 @@
                     <label for="remuneracao"> <fmt:message key="vaga.remuneracao" /> </label>
                 </td>
                 <td>
-                    <input type="text" id="remuneracao" name="remuneracao" value="${vaga.remuneracao}" />
+                    <input required type="text" id="remuneracao" name="remuneracao" value="${vaga.remuneracao}" />
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                     <label for="dataLimite"> <fmt:message key="vaga.dataLimite" /> </label>
                 </td>
                 <td>
-                    <input type="date" id="dataLimite" name="dataLimite" value="${vaga.dataLimiteInscricao}" />
+                    <input required type="date" id="dataLimite" name="dataLimite" value="${vaga.dataLimiteInscricao}" />
                 </td>
             </tr>
             <tr>
