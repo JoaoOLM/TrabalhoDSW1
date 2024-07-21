@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import br.ufscar.dc.dsw.dao.EmpresaDAO;
 import br.ufscar.dc.dsw.dao.ProfissionalDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
@@ -30,6 +31,7 @@ public class IndexController extends HttpServlet {
         doGet(request, response);
     }
 	
+	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Erro erros = new Erro();
 		if (request.getParameter("bOK") != null) {
@@ -82,10 +84,22 @@ public class IndexController extends HttpServlet {
         request.getSession().invalidate();
 		request.setAttribute("mensagens", erros);
 
-		 if(!erros.isExisteErros()) {
+		if(!erros.isExisteErros()) {
             VagaDAO vagaDAO = new VagaDAO();
-            List<Vaga> listaVagas = vagaDAO.getAllOpenVagas();
+			EmpresaDAO empresaDAO = new EmpresaDAO();
 			Profissional profissional = (Profissional) request.getSession().getAttribute("profissionalLogado");
+			String cidade = request.getParameter("cidade");
+
+			List<Vaga> listaVagas;
+			if (cidade == null || cidade.isEmpty()) {
+				listaVagas = vagaDAO.getAllOpenVagas();
+			} else {
+				listaVagas = vagaDAO.getOpenVagasByCidade(cidade);
+			}
+
+			// Obtenha todas as cidades para o filtro
+			List<String> cidades = empresaDAO.getAllCidades();
+			request.setAttribute("cidades", cidades);
 
             request.setAttribute("listaVagasAbertas", listaVagas);
             request.setAttribute("profissional", profissional);

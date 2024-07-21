@@ -1,22 +1,24 @@
 
 package br.ufscar.dc.dsw.controller;
 
-import br.ufscar.dc.dsw.dao.CandidaturaDAO;
-import br.ufscar.dc.dsw.dao.VagaDAO;
-import br.ufscar.dc.dsw.domain.Usuario;
-import br.ufscar.dc.dsw.domain.Vaga;
-import br.ufscar.dc.dsw.domain.Candidatura;
-import br.ufscar.dc.dsw.domain.Profissional;
-import br.ufscar.dc.dsw.util.Erro;
-
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import br.ufscar.dc.dsw.dao.CandidaturaDAO;
+import br.ufscar.dc.dsw.dao.EmpresaDAO;
+import br.ufscar.dc.dsw.dao.VagaDAO;
+import br.ufscar.dc.dsw.domain.Candidatura;
+import br.ufscar.dc.dsw.domain.Profissional;
+import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.Vaga;
+import br.ufscar.dc.dsw.util.Erro;
 
 @WebServlet(urlPatterns = "/candidatura/*")
 public class CandidaturaController extends HttpServlet {
@@ -85,12 +87,23 @@ public class CandidaturaController extends HttpServlet {
 
     private void listaVagas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         VagaDAO vagaDAO = new VagaDAO();
+        EmpresaDAO empresaDAO = new EmpresaDAO();
+        String cidade = request.getParameter("cidade");
 
         Profissional profissional = (Profissional) request.getSession().getAttribute("profissionalLogado");
 
-        List<Vaga> listaVagas = vagaDAO.getAllOpenAvailable(profissional.getId());
-        request.setAttribute("listaVagasAbertas", listaVagas);
+        List<Vaga> listaVagas;
+        if (cidade == null || cidade.isEmpty()) {
+            listaVagas = vagaDAO.getAllOpenAvailable(profissional.getId());
+        } else {
+            listaVagas = vagaDAO.getOpenVagasByCidade(cidade);
+        }
+
+        // Obtenha todas as cidades para o filtro
+        List<String> cidades = empresaDAO.getAllCidades();
+        request.setAttribute("cidades", cidades);
         
+        request.setAttribute("listaVagasAbertas", listaVagas);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/listaVagas.jsp");
         dispatcher.forward(request, response);
     }
