@@ -60,9 +60,9 @@
                         <td>
                            <select id="sexo" name="sexo" required>
                                 <option value="" >Selecione o sexo</option>
-                                <option value="0" >Masculino</option>
-                                <option value="1" >Feminino</option>
-                                <option value="2" >>Outros</option>
+                                <option value="0" ${profissional.sexo == 'MASCULINO' ? 'selected' : ''}>Masculino</option>
+                                <option value="1" ${profissional.sexo == 'FEMININO' ? 'selected' : ''}>Feminino</option>
+                                <option value="2" ${profissional.sexo == 'OUTRO' ? 'selected' : ''}>Outros</option>
                             </select>
                         </td>
                     </tr>
