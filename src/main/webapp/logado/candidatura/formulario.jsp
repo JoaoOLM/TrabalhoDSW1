@@ -31,7 +31,7 @@ pageEncoding="UTF-8"%>
                     </a>
                 </c:when>
                 <c:otherwise>
-                    <form action="inserir" method="post">
+                    <form action="inserir" method="post" enctype="multipart/form-data">
                         <%@include file="campos.jsp"%>
                     </form>
                 </c:otherwise>

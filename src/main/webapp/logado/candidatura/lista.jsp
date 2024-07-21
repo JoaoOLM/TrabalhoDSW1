@@ -30,9 +30,10 @@
                                 <fmt:message key="vaga.remuneracao" /> 
                             </th>
                             <th>
-                                <fmt:message key="vaga.dataLimite" /> 
+                                <fmt:message key="vaga.dataLimiteInscricao" /> 
                             </th>
                             <th> Status </th>
+                            <th> Curriculo </th>
                         </tr>
                         <c:forEach var="candidatura" items="${requestScope.listaCandidaturas}">
                             <tr>
@@ -40,8 +41,11 @@
                                 <td>
                                     <fmt:formatNumber value="${candidatura.vaga.remuneracao}" type="currency" currencySymbol="R$" />
                                 </td>
-                                <td>${candidatura.vaga.dataLimite}</td>
+                                <td>${candidatura.vaga.dataLimiteInscricao}</td>
                                 <td>${candidatura.status}</td>
+                                <td>
+                                    <a href="/<%=contextPath%>/upload/${candidatura.arquivoCurriculo}">${candidatura.arquivoCurriculo}</a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </table>
