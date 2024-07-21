@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.controller;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import br.ufscar.dc.dsw.dao.EmpresaDAO;
 import br.ufscar.dc.dsw.dao.ProfissionalDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
+import br.ufscar.dc.dsw.dao.VagaDAO;
 import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.util.Erro;
 
 @WebServlet(name = "Index", urlPatterns = { "/index.jsp", "/logout.jsp" })
@@ -64,7 +67,7 @@ public class IndexController extends HttpServlet {
                         }
                         else if (profissional != null){
                             request.getSession().setAttribute("profissionalLogado", profissional);
-                            response.sendRedirect("vagas/");
+                            response.sendRedirect("candidatura/");
                         }
                         return;
 					} else {
@@ -79,8 +82,20 @@ public class IndexController extends HttpServlet {
         request.getSession().invalidate();
 		request.setAttribute("mensagens", erros);
 
-		String URL = "/login.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher(URL);
-		rd.forward(request, response);
+		 if(!erros.isExisteErros()) {
+            VagaDAO vagaDAO = new VagaDAO();
+            List<Vaga> listaVagas = vagaDAO.getAllOpenVagas();
+			Profissional profissional = (Profissional) request.getSession().getAttribute("profissionalLogado");
+
+            request.setAttribute("listaVagasAbertas", listaVagas);
+            request.setAttribute("profissional", profissional);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/listaVagas.jsp");
+            dispatcher.forward(request, response);
+        }
+        else{
+            String URL = "/login.jsp";
+            RequestDispatcher rd = request.getRequestDispatcher(URL);
+            rd.forward(request, response);
+        }
     }
 }
