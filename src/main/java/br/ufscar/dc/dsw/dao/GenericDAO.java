@@ -34,6 +34,6 @@ abstract public class GenericDAO {
     	
     	String url = "jdbc:mysql://localhost:3306/Estagio?serverTimezone=UTC";
     	
-    	return DriverManager.getConnection(url, "root", "root");
+    	return DriverManager.getConnection(url, "root", "admin");
     }
 }
