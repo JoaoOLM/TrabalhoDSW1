@@ -76,4 +76,6 @@ O frontend agora estará acessível em [http://localhost:8080/Estagio/index.jsp]
 Se você tiver alguma dúvida, sugestão ou precisar de suporte, por favor, sinta-se à vontade para entrar em contato conosco:
 
 - ![João Otávio Langer de Moraes](https://github.com/JoaoOLM) - [Perfil](https://github.com/JoaoOLM)
+- [<img src="https://github.com/{{ JoaoOLM }}.png" width="60px;"/><br /><sub><ahref="https://github.com/{{ JoaoOLM }}">{{ JoaoOLM }}</a></sub>](https://github.com/{{ JoaoOLM }}
 - ![Jakson Huang Zheng](https://github.com/JaksonHZ) - [Perfil](https://github.com/JaksonHZ)
+- [<img src="https://github.com/{{ JaksonHZ }}.png" width="60px;"/><br /><sub><ahref="https://github.com/{{ JaksonHZ }}">{{ JaksonHZ }}</a></sub>](https://github.com/{{ JaksonHZ }}
