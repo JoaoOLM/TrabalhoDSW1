@@ -31,9 +31,12 @@ abstract public class GenericDAO {
     	 */
     	
     	/* Conexão banco de dados MySQL */
-    	
-    	String url = "jdbc:mysql://localhost:3306/Estagio?serverTimezone=UTC";
-    	
-    	return DriverManager.getConnection(url, "root", "root");
-    }
+
+		String host     = System.getenv().getOrDefault("MYSQL_HOST", "localhost");
+        String user     = System.getenv().getOrDefault("MYSQL_USER", "root");
+        String password = System.getenv().getOrDefault("MYSQL_ROOT_PASSWORD", "root");
+
+        return DriverManager.getConnection("jdbc:mysql://" + host + ":3306/Estagio?serverTimezone=UTC", user, password);
+    
+	}
 }

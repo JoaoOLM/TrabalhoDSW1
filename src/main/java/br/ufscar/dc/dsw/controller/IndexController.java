@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import br.ufscar.dc.dsw.dao.EmpresaDAO;
 import br.ufscar.dc.dsw.dao.ProfissionalDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
