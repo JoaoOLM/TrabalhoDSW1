@@ -24,14 +24,13 @@ public class VagaDAO extends GenericDAO {
     }
 
     public void insert(Vaga vaga) {
-        String sql = "INSERT INTO Vaga (empresa_id, descricao, remuneracao, data_limite_inscricao, data_criacao) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Vaga (empresa_id, descricao, remuneracao, data_limite_inscricao) VALUES (?, ?, ?, ?)";
         try (Connection conn = this.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setLong(1, vaga.getEmpresa().getId());
             statement.setString(2, vaga.getDescricao());
             statement.setDouble(3, vaga.getRemuneracao());
             statement.setDate(4, vaga.getDataLimiteInscricao());
-            statement.setTimestamp(5, vaga.getDataCriacao());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inserir vaga", e);

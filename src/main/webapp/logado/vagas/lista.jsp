@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
-<fmt:bundle basename="message">
+<fmt:bundle basename="messages">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -40,20 +40,20 @@
                         </th>
                     </tr>
 
-                    <c:forEach var="vaga" items="${requestScope.listaVagasAbertas}">
+                    <c:forEach var="vagaAberta" items="${requestScope.listaVagasAbertas}">
                         <tr>
-                            <td>${vaga.descricao}</td>
+                            <td>${vagaAberta.descricao}</td>
                             <td>
-                                <fmt:formatNumber value="${vaga.remuneracao}" type="currency" currencySymbol="R$" />
+                                <fmt:formatNumber value="${vagaAberta.remuneracao}" type="currency" currencySymbol="R$" />
                             </td>
-                            <td>${vaga.dataLimiteInscricao}</td>
+                            <td>${vagaAberta.dataLimiteInscricao}</td>
                             <td>
-                                <a href="/<%= contextPath%>/vagas/editar?id=${vaga.id}">
+                                <a href="/<%= contextPath %>/vagas/editar?id=${vagaAberta.id}">
                                     <fmt:message key="acao.editar" />
                                 </a>
                             </td>
                             <td>
-                                <a href="/<%= contextPath%>/vagas/candidaturas?id=${vaga.id}">
+                                <a href="/<%= contextPath %>/vagas/candidaturas?id=${vagaAberta.id}">
                                     <fmt:message key="acao.analizarCandidaturas" />
                                 </a>
                             </td>
@@ -85,20 +85,20 @@
                         </th>
                     </tr>
 
-                    <c:forEach var="vaga" items="${requestScope.listaVagasExpiradas}">
+                    <c:forEach var="vagaExpirada" items="${requestScope.listaVagasExpiradas}">
                         <tr>
-                            <td>${vaga.descricao}</td>
+                            <td>${vagaExpirada.descricao}</td>
                             <td>
-                                <fmt:formatNumber value="${vaga.remuneracao}" type="currency" currencySymbol="R$" />
+                                <fmt:formatNumber value="${vagaExpirada.remuneracao}" type="currency" currencySymbol="R$" />
                             </td>
-                            <td>${vaga.dataLimiteInscricao}</td>
+                            <td>${vagaExpirada.dataLimiteInscricao}</td>
                             <td>
-                                <a href="/<%= contextPath%>/vagas/editar?id=${vaga.id}">
+                                <a href="/<%= contextPath %>/vagas/editar?id=${vagaExpirada.id}">
                                     <fmt:message key="acao.editar" />
                                 </a>
                             </td>
                             <td>
-                                <a href="/<%= contextPath%>/vagas/candidaturas?id=${vaga.id}">
+                                <a href="/<%= contextPath %>/vagas/candidaturas?id=${vagaExpirada.id}">
                                     <fmt:message key="acao.analizarCandidaturas" />
                                 </a>
                             </td>

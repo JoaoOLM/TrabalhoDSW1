@@ -4,24 +4,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
-<fmt:bundle basename="message">
+<fmt:bundle basename="messages">
     <body>
         <div class="card">
             <h4>
                 <a href="${pageContext.request.contextPath}/profissionais" class="sair">
-                   Voltar
+                    <fmt:message key="botao.voltar" />
                 </a>
             </h4>
             <div class="tableCadastrar">
                 <table>
-
                     <caption class="title">
                         <c:choose>
                             <c:when test="${profissional != null}">
-                                Atualizar Profissional
+                                <fmt:message key="profissional.atualizar" />
                             </c:when>
                             <c:otherwise>
-                                Criar Profissional
+                                <fmt:message key="profissional.criar" />
                             </c:otherwise>
                         </c:choose>
                     </caption>
@@ -31,7 +30,7 @@
                     </c:if>
                     <tr>
                         <td>
-                            <label for="nome"> Nome </label>
+                            <label for="nome"> <fmt:message key="campo.nome" /> </label>
                         </td>
                         <td>
                             <input type="text" id="nome" name="nome" required value="${profissional.usuario.nome}" />
@@ -39,7 +38,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="cpf"> CPF </label>
+                            <label for="cpf"> <fmt:message key="campo.cpf" /> </label>
                         </td>
                         <td>
                             <input type="text" id="cpf" name="cpf" required value="${profissional.cpf}" />
@@ -47,7 +46,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="telefone"> Telefone </label>
+                            <label for="telefone"> <fmt:message key="campo.telefone" /> </label>
                         </td>
                         <td>
                             <input type="text" id="telefone" name="telefone" required value="${profissional.telefone}" />
@@ -55,20 +54,19 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="sexo"> Sexo </label>
+                            <label for="sexo"> <fmt:message key="campo.sexo" /> </label>
                         </td>
                         <td>
                            <select id="sexo" name="sexo" required>
-                                <option value="" >Selecione o sexo</option>
-                                <option value="0" ${profissional.sexo == 'MASCULINO' ? 'selected' : ''}>Masculino</option>
-                                <option value="1" ${profissional.sexo == 'FEMININO' ? 'selected' : ''}>Feminino</option>
-                                <option value="2" ${profissional.sexo == 'OUTRO' ? 'selected' : ''}>Outros</option>
+                                <option value="0" ${profissional.sexo == 'MASCULINO' ? 'selected' : ''}><fmt:message key="opcao.sexo.masculino" /></option>
+                                <option value="1" ${profissional.sexo == 'FEMININO' ? 'selected' : ''}><fmt:message key="opcao.sexo.feminino" /></option>
+                                <option value="2" ${profissional.sexo == 'OUTRO' ? 'selected' : ''}><fmt:message key="opcao.sexo.outro" /></option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="dataNascimento"> Data de Nascimento </label>
+                            <label for="dataNascimento"> <fmt:message key="campo.dataNascimento" /> </label>
                         </td>
                         <td>
                             <input type="date" id="dataNascimento" name="dataNascimento" required value="${profissional.dataNascimento}" />
@@ -76,7 +74,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="email"> E-mail </label>
+                            <label for="email"> <fmt:message key="campo.email" /> </label>
                         </td>
                         <td>
                             <input type="email" id="email" name="email" required value="${profissional.usuario.email}" />
@@ -84,7 +82,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="senha"> Senha </label>
+                            <label for="senha"> <fmt:message key="campo.senha" /> </label>
                         </td>
                         <td>
                             <input type="password" id="senha" name="senha" required value="${profissional.usuario.senha}" />
@@ -92,7 +90,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="admin"> Admin </label>
+                            <label for="admin"> <fmt:message key="campo.admin" /> </label>
                         </td>
                         <td>
                             <input type="checkbox" id="admin" name="admin" value="${profissional.usuario.admin}" />
@@ -100,7 +98,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <input type="submit" value="Salvar" class="button" />
+                            <input type="submit" value="<fmt:message key="botao.salvar" />" class="button" />
                         </td>
                     </tr>
                 </table>
@@ -108,5 +106,4 @@
         </div>
     </body>
 </fmt:bundle>
-
 </html>
