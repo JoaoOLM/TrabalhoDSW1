@@ -114,6 +114,62 @@ public class VagaDAO extends GenericDAO {
         return listaVagas;
     }
 
+    public List<Vaga> getAllOpenVagasByEmpresa(Long empresaId) {
+        System.out.println(empresaId);
+        List<Vaga> listaVagas = new ArrayList<>();
+        String sql = "SELECT * FROM vaga v "
+                   + "JOIN empresa e ON v.empresa_id = e.id " 
+                   + "JOIN usuario u ON e.id_usuario = u.id " 
+                   + "WHERE e.id = ? " 
+                   + "AND DATE(v.data_limite_inscricao) >= CURDATE() " 
+                   +  "ORDER BY v.data_limite_inscricao";
+
+    
+        try (Connection conn = this.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setLong(1, empresaId);
+            System.out.println(statement);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    listaVagas.add(setVaga(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar vagas abertas para a empresa", e);
+        }
+    
+        return listaVagas;
+    }
+    
+    
+    
+    public List<Vaga> getAllExpiredVagasByEmpresa(Long empresaId) {
+        List<Vaga> listaVagas = new ArrayList<>();
+        String sql = "SELECT * FROM vaga v "
+                   + "JOIN empresa e ON v.empresa_id = e.id " 
+                   + "JOIN usuario u ON e.id_usuario = u.id " 
+                   + "WHERE e.id = ? " 
+                   + "AND DATE(v.data_limite_inscricao) < CURDATE() " 
+                   +  "ORDER BY v.data_limite_inscricao";
+    
+        try (Connection conn = this.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setLong(1, empresaId);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    listaVagas.add(setVaga(resultSet));
+                }
+            }
+    
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar vagas expiradas para a empresa", e);
+        }
+    
+        return listaVagas;
+    }
+
     public List<Vaga> getAllOpenVagas() {
         List<Vaga> listaVagas = new ArrayList<>();
         String sql = "SELECT * FROM vaga v, empresa e, usuario u WHERE v.empresa_id = e.id AND e.id_usuario = u.id AND DATE(v.data_limite_inscricao) >= CURDATE()";

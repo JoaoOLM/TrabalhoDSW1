@@ -50,4 +50,22 @@ CREATE TABLE candidatura (
     FOREIGN KEY (profissional_id) REFERENCES profissional(id) ON DELETE CASCADE
 );
 
-INSERT INTO usuario (email, nome, senha, is_admin) VALUES ('teste@gmail.com', 'teste', 'teste', 1);
+INSERT INTO usuario (email, nome, senha, is_admin) VALUES 
+('admin@gmail.com', 'Admin User', 'teste', 1),
+('user1@gmail.com', 'Profissional 1', 'teste', 0),
+('user2@gmail.com', 'Profissiona 2', 'teste', 0),
+('user3@gmail.com', 'Empresa 1', 'teste', 0),
+('user4@gmail.com', 'Empresa 2', 'teste', 0);
+
+INSERT INTO profissional (id_usuario, CPF, telefone, sexo, data_nascimento) VALUES
+(2, '12345678901', '96555-1234', 1, '1990-01-01'),
+(3, '09876543210', '96555-5678', 2, '1992-02-02');
+
+INSERT INTO empresa (id_usuario, CNPJ, descricao, cidade) VALUES
+(4, '11222333444455', 'Empresa de Tecnologia', 'São Paulo'),
+(5, '22333444555666', 'Consultoria Financeira', 'Rio de Janeiro');
+
+INSERT INTO vaga (empresa_id, descricao, remuneracao, data_limite_inscricao) VALUES
+(1, 'Desenvolvedor Java', 5000.00, '2024-08-30'),
+(1, 'Analista de Dados', 4500.00, '2024-09-15'),
+(2, 'Consultor Financeiro', 6000.00, '2024-08-25');

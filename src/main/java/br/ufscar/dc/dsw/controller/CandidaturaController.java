@@ -1,14 +1,6 @@
 
 package br.ufscar.dc.dsw.controller;
 
-import br.ufscar.dc.dsw.dao.CandidaturaDAO;
-import br.ufscar.dc.dsw.dao.EmpresaDAO;
-import br.ufscar.dc.dsw.dao.VagaDAO;
-import br.ufscar.dc.dsw.domain.Usuario;
-import br.ufscar.dc.dsw.domain.Vaga;
-import br.ufscar.dc.dsw.domain.Candidatura;
-import br.ufscar.dc.dsw.domain.Profissional;
-import br.ufscar.dc.dsw.util.Erro;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -19,12 +11,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import static br.ufscar.dc.dsw.Constants.*;
 
-@WebServlet(urlPatterns = "/candidatura/*")
+import static br.ufscar.dc.dsw.Constants.MAX_FILE_SIZE;
+import static br.ufscar.dc.dsw.Constants.MAX_REQUEST_SIZE;
+import static br.ufscar.dc.dsw.Constants.MEMORY_THRESHOLD;
+import static br.ufscar.dc.dsw.Constants.UPLOAD_DIRECTORY;
+import br.ufscar.dc.dsw.dao.CandidaturaDAO;
+import br.ufscar.dc.dsw.dao.EmpresaDAO;
+import br.ufscar.dc.dsw.dao.VagaDAO;
+import br.ufscar.dc.dsw.domain.Candidatura;
+import br.ufscar.dc.dsw.domain.Profissional;
+import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.Vaga;
+import br.ufscar.dc.dsw.util.Erro;
+
+@WebServlet(urlPatterns = "/candidaturas/*")
 public class CandidaturaController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -62,9 +67,9 @@ public class CandidaturaController extends HttpServlet {
         }
         try {
             switch (action) {
-                // case "/cadastrar":
-                //     apresentaFormCadastro(request, response);
-                //     break;
+                case "/cadastrar":
+                    apresentaFormCadastro(request, response);
+                    break;
                 case "/inserir":
                     inserir(request, response);
                     break;
@@ -77,7 +82,7 @@ public class CandidaturaController extends HttpServlet {
                 // case "/atualizar":
                 //     atualizar(request, response);
                 //     break;
-                case "/candidaturas":
+                case "/lista":
                     lista(request, response);
                     break;
                 default:
@@ -90,7 +95,6 @@ public class CandidaturaController extends HttpServlet {
     }
 
     private void listaVagas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        VagaDAO vagaDAO = new VagaDAO();
         EmpresaDAO empresaDAO = new EmpresaDAO();
         String cidade = request.getParameter("cidade");
 
@@ -112,6 +116,11 @@ public class CandidaturaController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        forward(request, response, "/logado/profissional/formulario.jsp");
+    }
+
     private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CandidaturaDAO candidaturaDAO = new CandidaturaDAO();
 
@@ -123,6 +132,7 @@ public class CandidaturaController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/lista.jsp");
         dispatcher.forward(request, response);
     }
+
 
     private void apresentaFormInscricao(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -180,12 +190,17 @@ public class CandidaturaController extends HttpServlet {
 					}
                     Candidatura candidatura = new Candidatura(vaga, profissional, fileName);
                     candidaturaDAO.insert(candidatura);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/lista.jsp");
-                    dispatcher.forward(request, response);
+                    response.sendRedirect("lista");
 				}
 			} catch (Exception ex) {
 				request.getSession().setAttribute("message", "There was an error: " + ex.getMessage());
 			}
 		}
+    }
+    
+    private void forward(HttpServletRequest request, HttpServletResponse response, String path)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+        dispatcher.forward(request, response);
     }
 }

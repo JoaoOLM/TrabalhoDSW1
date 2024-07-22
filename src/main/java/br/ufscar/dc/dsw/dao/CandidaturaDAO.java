@@ -38,6 +38,26 @@ public class CandidaturaDAO extends GenericDAO {
         }
     }
 
+    public List<Candidatura> getAll() {
+        List<Candidatura> listaCandidaturas = new ArrayList<>();
+        String sql = "SELECT * FROM candidatura c "
+                   + "JOIN profissional p ON c.profissional_id = p.id "
+                   + "JOIN vaga v ON c.vaga_id = v.id "
+                   + "JOIN empresa e ON v.empresa_id = e.id "
+                   + "JOIN usuario u ON p.id_usuario = u.id "
+                   + "JOIN usuario ue ON e.id_usuario = ue.id";
+        try (Connection conn = this.getConnection();
+             Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                listaCandidaturas.add(setCandidatura(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar candidaturas", e);
+        }
+        return listaCandidaturas;
+    }
+
     public void delete(Candidatura candidatura) {
         String sql = "DELETE FROM Candidatura WHERE id = ?";
         try (Connection conn = this.getConnection();
@@ -88,26 +108,6 @@ public class CandidaturaDAO extends GenericDAO {
         return candidatura;
     }
 
-    public List<Candidatura> getAll() {
-        List<Candidatura> listaCandidaturas = new ArrayList<>();
-        String sql = "SELECT * FROM candidatura c "
-                   + "JOIN profissional p ON c.profissional_id = p.id "
-                   + "JOIN vaga v ON c.vaga_id = v.id "
-                   + "JOIN empresa e ON v.empresa_id = e.id "
-                   + "JOIN usuario u ON p.id_usuario = u.id "
-                   + "JOIN usuario ue ON e.id_usuario = ue.id";
-        try (Connection conn = this.getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                listaCandidaturas.add(setCandidatura(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao listar candidaturas", e);
-        }
-        return listaCandidaturas;
-    }
-
     public List<Candidatura> getAllByProfissional(Long id) {
         List<Candidatura> listaCandidaturas = new ArrayList<>();
         String sql = "SELECT * FROM candidatura c "
@@ -130,4 +130,28 @@ public class CandidaturaDAO extends GenericDAO {
         }
         return listaCandidaturas;
     }
+
+    public List<Candidatura> getAllByVaga(Long vagaId) {
+        List<Candidatura> listaCandidaturas = new ArrayList<>();
+        String sql = "SELECT * FROM candidatura c "
+                   + "JOIN profissional p ON c.profissional_id = p.id "
+                   + "JOIN vaga v ON c.vaga_id = v.id "
+                   + "JOIN empresa e ON v.empresa_id = e.id "
+                   + "JOIN usuario u ON p.id_usuario = u.id "
+                   + "JOIN usuario ue ON e.id_usuario = ue.id "
+                   + "WHERE v.id = ?";
+        try (Connection conn = this.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setLong(1, vagaId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    listaCandidaturas.add(setCandidatura(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao listar candidaturas por vaga", e);
+        }
+        return listaCandidaturas;
+    }
+    
 }
