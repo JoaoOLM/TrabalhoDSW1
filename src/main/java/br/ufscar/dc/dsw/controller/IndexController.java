@@ -38,16 +38,12 @@ public class IndexController extends HttpServlet {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 
-            System.out.println("Login: " + login);
-            System.out.println("Senha: " + senha);
-
 			if (login == null || login.isEmpty()) {
 				erros.add("Login não informado!");
 			}
 			if (senha == null || senha.isEmpty()) {
 				erros.add("Senha não informada!");
 			}
-            System.out.println("entrou aq1");
 
 			if (!erros.isExisteErros()) {
 				UsuarioDAO usuario_dao = new UsuarioDAO();
@@ -65,11 +61,11 @@ public class IndexController extends HttpServlet {
                         }
 						else if (empresa != null){ 
                             request.getSession().setAttribute("empresaLogada", empresa);
-                            response.sendRedirect("vagasempresa/");
+                            response.sendRedirect("vagas/");
                         }
                         else if (profissional != null){
                             request.getSession().setAttribute("profissionalLogado", profissional);
-                            response.sendRedirect("candidatura/");
+                            response.sendRedirect("candidaturas/");
                         }
                         return;
 					} else {

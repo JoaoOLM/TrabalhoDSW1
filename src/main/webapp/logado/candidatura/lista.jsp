@@ -6,53 +6,53 @@
 <html>
 <fmt:bundle basename="message">
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>
-            Candidatura
-        </title>
-        <link href="${pageContext.request.contextPath}/index.css" rel="stylesheet" type="text/css" />
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+        Candidatura
+    </title>
+    <link href="${pageContext.request.contextPath}/index.css" rel="stylesheet" type="text/css" />
 
-    </head>
-    <body>
-        <% String contextPath = request.getContextPath().replace("/", ""); %>
-            <div class="table">
-                <div style="margin-top: 2rem;">
-                    <h2>
-                        <fmt:message key="candidatura.lista" />
-                    </h2>
-                    <table border="1">
+</head>
+<body>
+    <% String contextPath = request.getContextPath().replace("/", ""); %>
+        <div class="table">
+            <div style="margin-top: 2rem;">
+                <h2>
+                    <fmt:message key="candidatura.lista" />
+                </h2>
+                <table border="1">
+                    <tr>
+                        <th>
+                            <fmt:message key="vaga.descricao" /> 
+                        </th>
+                        <th>
+                            <fmt:message key="vaga.remuneracao" /> 
+                        </th>
+                        <th>
+                            <fmt:message key="vaga.dataLimiteInscricao" /> 
+                        </th>
+                        <th> Status </th>
+                        <th> Curriculo </th>
+                    </tr>
+                    <c:forEach var="candidatura" items="${requestScope.listaCandidaturas}">
                         <tr>
-                            <th>
-                                <fmt:message key="vaga.descricao" /> 
-                            </th>
-                            <th>
-                                <fmt:message key="vaga.remuneracao" /> 
-                            </th>
-                            <th>
-                                <fmt:message key="vaga.dataLimiteInscricao" /> 
-                            </th>
-                            <th> Status </th>
-                            <th> Curriculo </th>
+                            <td>${candidatura.vaga.descricao}</td>
+                            <td>
+                                <fmt:formatNumber value="${candidatura.vaga.remuneracao}" type="currency" currencySymbol="R$" />
+                            </td>
+                            <td>${candidatura.vaga.dataLimiteInscricao}</td>
+                            <td>${candidatura.status}</td>
+                            <td>
+                                <a href="/<%=contextPath%>/upload/${candidatura.arquivoCurriculo}">${candidatura.arquivoCurriculo}</a>
+                            </td>
                         </tr>
-                        <c:forEach var="candidatura" items="${requestScope.listaCandidaturas}">
-                            <tr>
-                                <td>${candidatura.vaga.descricao}</td>
-                                <td>
-                                    <fmt:formatNumber value="${candidatura.vaga.remuneracao}" type="currency" currencySymbol="R$" />
-                                </td>
-                                <td>${candidatura.vaga.dataLimiteInscricao}</td>
-                                <td>${candidatura.status}</td>
-                                <td>
-                                    <a href="/<%=contextPath%>/upload/${candidatura.arquivoCurriculo}">${candidatura.arquivoCurriculo}</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                </div>
+                    </c:forEach>
+                </table>
             </div>
+        </div>
 
-    </body>
+</body>
 
 </fmt:bundle>
 

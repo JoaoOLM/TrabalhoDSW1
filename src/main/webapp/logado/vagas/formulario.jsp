@@ -20,7 +20,7 @@ pageEncoding="UTF-8"%>
                     <form action="atualizar" method="post">
                         <%@include file="campos.jsp"%>
                     </form>
-                    <a href="/<%= contextPath%>/vagasempresa/remover?id=${vaga.id}"
+                    <a href="/<%= contextPath%>/vagas/remover?id=${vaga.id}"
                         onclick="return confirm('<fmt:message key="link.confirmar" />')">
                         <fmt:message key="vaga.remover" />
                     </a>

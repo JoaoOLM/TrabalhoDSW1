@@ -9,10 +9,6 @@ abstract public class GenericDAO {
     public GenericDAO() {
         try {
             
-        	/* Setup Banco de dados Derby */
-        	
-        	// Class.forName("org.apache.derby.jdbc.ClientDriver");
-            
         	/* Setup Banco de dados MySQL */
         	
         	Class.forName("com.mysql.cj.jdbc.Driver");
@@ -24,16 +20,10 @@ abstract public class GenericDAO {
 
     protected Connection getConnection() throws SQLException {
     	
-    	/* Conexão banco de dados Derby */
-    	
-    	/* 
-    	 * String url = "jdbc:derby://localhost:1527/Livraria";
-    	 */
-    	
     	/* Conexão banco de dados MySQL */
 		String host     = System.getenv().getOrDefault("MYSQL_HOST", "localhost");
         String user     = System.getenv().getOrDefault("MYSQL_USER", "root");
-        String password = System.getenv().getOrDefault("MYSQL_ROOT_PASSWORD", "root");
+        String password = System.getenv().getOrDefault("MYSQL_ROOT_PASSWORD", "admin");
 
         return DriverManager.getConnection("jdbc:mysql://" + host + ":3306/Estagio?serverTimezone=UTC", user, password);
     
