@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <html>
-<fmt:bundle basename="message">
+<fmt:bundle basename="messages">
     <head>
         <title><fmt:message key="pagina.empresa" /></title>
         <link rel="icon" type="image/png" href="https://cdn.iconscout.com/icon/free/png-256/dashboard-1739866-1481441.png" />

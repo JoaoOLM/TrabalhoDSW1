@@ -1,4 +1,4 @@
-<%@ page language="java" content="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="curriculo"> <fmt:message key="vaga.curriculo" /> </label>
+                    <label for="curriculo"> <fmt:message key="candidatura.arquivoCurriculo" /> </label>
                 </td>
                 <td>
                     <input type="file" id="curriculo" name="curriculo" required />

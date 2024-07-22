@@ -18,6 +18,7 @@
         <a href="${pageContext.request.contextPath}/logout.jsp" class="sair">
             <fmt:message key="navbar.sair" />
         </a>
+        <br/>
         <a href="${pageContext.request.contextPath}/candidaturas/lista" class="candidaturas">
             <fmt:message key="candidaturas.listar" />
             </a>

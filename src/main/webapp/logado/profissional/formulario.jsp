@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
-<fmt:bundle basename="message">
+<fmt:bundle basename="messages">
 
     <head>
         <title>

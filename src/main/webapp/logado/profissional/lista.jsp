@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
-<fmt:bundle basename="message">
+<fmt:bundle basename="messages">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,10 +17,10 @@
     <body>
         <div class="right">
             <p style="margin-right: 20px;">
-                <fmt:message key="usuario.olamensagem" /> ${sessionScope.usuarioLogado.nome}!
+                <fmt:message key="mensagem.olamensagem" /> ${sessionScope.usuarioLogado.nome}!
             </p>
             <a href="${pageContext.request.contextPath}/logout.jsp" class="sair">
-                <fmt:message key="usuario.logout" />
+                <fmt:message key="botao.logout" />
             </a>
         </div>
 

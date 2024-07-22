@@ -1,12 +1,11 @@
-<%@ page language="java" content="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page isELIgnored="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <html>
-<fmt:bundle basename="message">
+<fmt:bundle basename="messages">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><fmt:message key="formulario.atualizar" /></title>
         <link href="${pageContext.request.contextPath}/index.css" rel="stylesheet" type="text/css" />
     </head>

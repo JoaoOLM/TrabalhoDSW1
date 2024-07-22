@@ -49,8 +49,7 @@ public class CandidaturaController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
         Profissional profissional = (Profissional) request.getSession().getAttribute("profissionalLogado");
@@ -140,7 +139,9 @@ public class CandidaturaController extends HttpServlet {
         Vaga vaga = vagaDAO.get(id);
         System.out.println("Vaga: " + vaga);
         System.out.println("id: " + id);
+        System.out.println("entrou onde devia");
         request.setAttribute("vaga", vaga);
+        // response.sendRedirect("Estagio/logado/candidatura/formulario.jsp");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/candidatura/formulario.jsp");
         dispatcher.forward(request, response);
     }
