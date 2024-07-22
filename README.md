@@ -41,6 +41,17 @@ Requisitos para rodar o sistema
 4. [Tomcat](https://tomcat.apache.org/)
 
 ## Como Rodar
+Para iniciar o projeto será necessário incluir um arquivo config.properties dentro de src\main\resources\, o arquivo deve seguir o seguinte modelo:
+
+    mail.smtp.host = smtp.gmail.com  
+    mail.smtp.port = 465  
+    mail.smtp.ssl.enable = true  
+    mail.smtp.auth = true  
+    username = [username]@gmail.com  
+    password = <password>  
+
+Mais informações em: [https://support.google.com/accounts/answer/185833?hl=pt-BR](https://support.google.com/accounts/answer/185833?hl=pt-BR)
+
 Para iniciar o projeto, siga as instruções abaixo:
 
 1. Abra um terminal no diretório raiz e entre no mysql.
