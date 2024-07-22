@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" content="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -6,7 +6,6 @@
 <div class="card">
     <div class="tableCadastrar">
         <table>
-
             <caption class="title">
                 <fmt:message key="candidatura.criar" />
             </caption>
@@ -39,15 +38,15 @@
             </tr>
             <tr>
                 <td>
-                    <label for="curriculo"> Curriculo </label>
+                    <label for="curriculo"> <fmt:message key="vaga.curriculo" /> </label>
                 </td>
                 <td>
-                    <input type="file" id="curriculo" name="curriculo" required/>
+                    <input type="file" id="curriculo" name="curriculo" required />
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" value="<fmt:message key= "acao.salvar"/>" class="button" />
+                    <input type="submit" value="<fmt:message key='acao.salvar'/>" class="button" />
                 </td>
             </tr>
         </table>
