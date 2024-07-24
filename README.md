@@ -48,6 +48,7 @@ Para iniciar o projeto será necessário incluir um arquivo config.properties de
     mail.smtp.ssl.enable = true  
     mail.smtp.auth = true  
     username = [username]@gmail.com  
+    name = <emailName>
     password = <password>  
 
 Mais informações em: [https://support.google.com/accounts/answer/185833?hl=pt-BR](https://support.google.com/accounts/answer/185833?hl=pt-BR)
