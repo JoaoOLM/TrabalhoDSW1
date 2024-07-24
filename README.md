@@ -41,7 +41,7 @@ Requisitos para rodar o sistema
 4. [Tomcat](https://tomcat.apache.org/)
 
 ## Como Rodar
-Para iniciar o projeto será necessário incluir um arquivo config.properties dentro de src\main\resources\, o arquivo deve seguir o seguinte modelo:
+Para iniciar o projeto será necessário alterar o arquivo GenericDAO.java para alterar suas credencias do banco de dados, além de incluir um arquivo config.properties dentro de src\main\resources\, o arquivo deve seguir o seguinte modelo:
 
     mail.smtp.host = smtp.gmail.com  
     mail.smtp.port = 465  
