@@ -60,7 +60,7 @@ Para iniciar o projeto, siga as instruções abaixo:
    ```
 2. Após inserir sua senha gere o banco de dados.
    ```bash
-   source db/MySQL/create.db
+   source db/MySQL/create.sql
    ```
 4. Inicie o tomcat.
     - Windows
