@@ -21,6 +21,9 @@ import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.util.EmailService;
 import br.ufscar.dc.dsw.util.Erro;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Properties;
 
 @WebServlet(urlPatterns = "/vagas/*")
 public class VagaController extends HttpServlet {
@@ -238,10 +241,22 @@ public class VagaController extends HttpServlet {
         // Atualiza a candidatura no banco de dados
         candidaturaDAO.update(candidatura);
 
+        Properties prop = new Properties();
+        InputStream is = VagaController.class.getClassLoader().getResourceAsStream("config.properties");
+
+        if (is != null) {
+            prop.load(is);
+        } else {
+            throw new FileNotFoundException("config.properties not found in the classpath");
+        }
+
+        String username = prop.getProperty("username");
+        String name = prop.getProperty("name");
+
         // Envia e-mails conforme o status
         try {
             EmailService emailService = new EmailService();
-            InternetAddress from = new InternetAddress("testearca092@gmail.com", "João");
+            InternetAddress from = new InternetAddress(username, name);
             InternetAddress to = new InternetAddress(profissional.getUsuario().getEmail(), profissional.getUsuario().getNome());
 
             if (status == Candidatura.Status.NAO_SELECIONADO.ordinal()) {

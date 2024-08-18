@@ -21,11 +21,9 @@ abstract public class GenericDAO {
     protected Connection getConnection() throws SQLException {
     	
     	/* Conexão banco de dados MySQL */
-		String host     = System.getenv().getOrDefault("MYSQL_HOST", "localhost");
-        String user     = System.getenv().getOrDefault("MYSQL_USER", "root");
-        String password = System.getenv().getOrDefault("MYSQL_ROOT_PASSWORD", "admin");
-
-        return DriverManager.getConnection("jdbc:mysql://" + host + ":3306/Estagio?serverTimezone=UTC", user, password);
+        String url = "jdbc:mysql://localhost:3306/Estagio?serverTimezone=UTC";
+    	
+    	return DriverManager.getConnection(url, "root", "admin");
     
 	}
 }

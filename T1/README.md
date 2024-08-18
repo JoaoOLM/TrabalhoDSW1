@@ -41,6 +41,18 @@ Requisitos para rodar o sistema
 4. [Tomcat](https://tomcat.apache.org/)
 
 ## Como Rodar
+Para iniciar o projeto será necessário alterar o arquivo GenericDAO.java para alterar suas credencias do banco de dados, além de incluir um arquivo config.properties dentro de src\main\resources\, o arquivo deve seguir o seguinte modelo:
+
+    mail.smtp.host = smtp.gmail.com  
+    mail.smtp.port = 465  
+    mail.smtp.ssl.enable = true  
+    mail.smtp.auth = true  
+    username = [username]@gmail.com  
+    name = <emailName>
+    password = <password>  
+
+Mais informações em: [https://support.google.com/accounts/answer/185833?hl=pt-BR](https://support.google.com/accounts/answer/185833?hl=pt-BR)
+
 Para iniciar o projeto, siga as instruções abaixo:
 
 1. Abra um terminal no diretório raiz e entre no mysql.
@@ -49,7 +61,7 @@ Para iniciar o projeto, siga as instruções abaixo:
    ```
 2. Após inserir sua senha gere o banco de dados.
    ```bash
-   source db/MySQL/create.db
+   source db/MySQL/create.sql
    ```
 4. Inicie o tomcat.
     - Windows
@@ -70,6 +82,63 @@ Para iniciar o projeto, siga as instruções abaixo:
 
 O frontend agora estará acessível em [http://localhost:8080/Estagio/index.jsp](http://localhost:8080/Estagio/index.jsp).
 
+Para possibilitar o teste das funcionalidades foram adicionados alguns usuários de teste:  
+    admin@gmail.com : Usuário Admin  
+    user1@gmail.com e user2@gmail.com : Usuários Profissional  
+    user3@gmail.com e user4@gmail.com : Usuários Empresa  
+A senha para todos os usuários é: teste
+
+Também foram criadas 3 vagas, duas do user3 e uma do user4.
+
+## Requisitos 
+
+Os requisitos para o sistema podem ser verificiados em [Requisitos-A1](Requisitos-A1.pdf)
+
+
+R1:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (100%)
+
+R2:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (100%)
+
+R3:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R4:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado   
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R5:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R6:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R7:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R8:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JoaoOLM (100%)
+
+R9:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
 
 ## Contato
 
