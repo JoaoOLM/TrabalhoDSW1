@@ -41,16 +41,16 @@ public class Profissional extends Usuario {
         super.setId(id);
     }
 
-    public Profissional(String email, String nome, String senha, boolean isAdmin, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
-        super(email, nome, senha, isAdmin);
+    public Profissional(String email, String nome, String senha, String role, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
+        super(email, nome, senha, role);
         this.cpf = cpf;
         this.telefone = telefone;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
     }
 
-    public Profissional(Long id, String email, String nome, String senha, boolean isAdmin, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
-        super(id, email, nome, senha, isAdmin);
+    public Profissional(Long id, String email, String nome, String senha, String role, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
+        super(id, email, nome, senha, role);
         this.cpf = cpf;
         this.telefone = telefone;
         this.sexo = sexo;

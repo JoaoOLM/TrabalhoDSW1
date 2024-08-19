@@ -27,7 +27,7 @@ public class Usuario extends AbstractEntity<Long> {
 
     @NotNull
     @Column(nullable = false)
-    private boolean isAdmin;
+    private String role;
 
     public Usuario() {
     }
@@ -36,19 +36,19 @@ public class Usuario extends AbstractEntity<Long> {
         super.setId(id);
     }
 
-    public Usuario(String email, String nome, String senha, boolean isAdmin) {
+    public Usuario(String email, String nome, String senha, String role) {
         this.email = email;
         this.nome = nome;
         this.senha = senha;
-        this.isAdmin = isAdmin;
+        this.role = role;
     }
 
-    public Usuario(Long id, String email, String nome, String senha, boolean isAdmin) {
+    public Usuario(Long id, String email, String nome, String senha, String role) {
         super.setId(id);
         this.email = email;
         this.nome = nome;
         this.senha = senha;
-        this.isAdmin = isAdmin;
+        this.role = role;
     }
 
     public String getEmail() {
@@ -75,11 +75,11 @@ public class Usuario extends AbstractEntity<Long> {
         this.senha = senha;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public String role() {
+        return role;
     }
 
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setAdmin(String role) {
+        this.role = role;
     }
 }
