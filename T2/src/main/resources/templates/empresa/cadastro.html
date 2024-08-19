@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+
+        <nav class="navbar navbar-expand-md bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <i class="oi oi-caret-right"></i>
+                        <span th:text="#{empresa.cadastrar.label}"></span>
+                    </li>
+                </ul>
+                <a class="btn btn-primary btn-md" th:href="@{/empresa/listar}" role="button">
+                    <span class="oi oi-spreadsheet" title="Listar" aria-hidden="true"></span>
+                    <span th:text="#{empresa.listar.label}"></span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="container" id="cadastro">
+            <div th:replace="~{fragments/alert}"></div>
+
+            <form th:action="${empresa.id == null} ? @{/empresa/salvar} : @{/empresa/editar}" th:object="${empresa}" method="POST">
+
+                <div class="form-row">
+                    <!-- Campos herdados de Usuario -->
+                    <div class="form-group col-md-6">
+                        <label th:text="#{usuario.email.label}" for="email"></label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" th:placeholder="#{usuario.email.label}" th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
+                        <div class="invalid-feedback">
+                            <span th:errors="*{email}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{usuario.nome.label}" for="nome"></label>
+                        <input type="text" class="form-control" id="nome" th:field="*{nome}" th:placeholder="#{usuario.nome.label}" th:classappend="${#fields.hasErrors('nome')} ? is-invalid" />
+                        <div class="invalid-feedback">
+                            <span th:errors="*{nome}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{usuario.password.label}" for="password"></label>
+                        <input type="password" class="form-control" id="password" th:field="*{password}" th:placeholder="#{usuario.password.label}" th:classappend="${#fields.hasErrors('password')} ? is-invalid" />
+                        <div class="invalid-feedback">
+                            <span th:errors="*{password}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{empresa.cnpj.label}" for="CNPJ"></label>
+                        <input type="text" class="form-control" id="CNPJ" th:field="*{CNPJ}" placeholder="__.___.___/____-__" data-mask="00.000.000/0000-00" data-mask-reverse="true" th:classappend="${#fields.hasErrors('CNPJ')} ? is-invalid" />
+                        <div class="invalid-feedback">
+                            <span th:errors="*{CNPJ}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{empresa.descricao.label}" for="descricao"></label>
+                        <textarea class="form-control" id="descricao" th:field="*{descricao}" th:placeholder="#{empresa.descricao.label}" th:classappend="${#fields.hasErrors('descricao')} ? is-invalid"></textarea>
+                        <div class="invalid-feedback">
+                            <span th:errors="*{descricao}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{empresa.cidade.label}" for="cidade"></label>
+                        <input type="text" class="form-control" id="cidade" th:field="*{cidade}" th:placeholder="#{empresa.cidade.label}" th:classappend="${#fields.hasErrors('cidade')} ? is-invalid" />
+                        <div class="invalid-feedback">
+                            <span th:errors="*{cidade}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" th:text="#{button.salvar.label}" class="btn btn-primary btn-sm"></button>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

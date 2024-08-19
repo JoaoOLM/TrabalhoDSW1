@@ -6,7 +6,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 
 @SuppressWarnings("serial")
@@ -27,7 +26,6 @@ public class Usuario extends AbstractEntity<Long> {
     @Column(nullable = false, length = 64)
     private String password;
 
-    @NotNull
     @Column(nullable = false)
     private String role;
 
@@ -75,6 +73,10 @@ public class Usuario extends AbstractEntity<Long> {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getRole() {

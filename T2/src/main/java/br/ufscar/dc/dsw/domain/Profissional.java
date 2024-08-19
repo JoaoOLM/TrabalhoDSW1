@@ -31,6 +31,8 @@ public class Profissional extends Usuario {
     @Column(nullable = false, length = 19)
     private String dataNascimento;
 
+    private String role = "ROLE_EMPRESA";
+    
     public Profissional() {
     }
 

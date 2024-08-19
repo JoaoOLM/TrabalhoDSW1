@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.ufscar.dc.dsw.dao.IUsuarioDAO;
+import br.ufscar.dc.dsw.domain.Empresa;
+import br.ufscar.dc.dsw.domain.Usuario;
 
 @SpringBootApplication
 public class LivrariaMvcApplication {
@@ -19,14 +21,22 @@ public class LivrariaMvcApplication {
 	public CommandLineRunner demo(IUsuarioDAO usuarioDAO, BCryptPasswordEncoder encoder) {
 		return (args) -> {
 			
-			// Usuario u1 = new Usuario();
-			// u1.setUsername("admin");
-			// u1.setPassword(encoder.encode("admin"));
-			// u1.setCPF("012.345.678-90");
-			// u1.setName("Administrador");
-			// u1.setRole("ROLE_ADMIN");
-			// u1.setEnabled(true);
-			// usuarioDAO.save(u1);
+			Usuario u1 = new Usuario();
+			u1.setEmail("admin@admin.com");
+			u1.setPassword(encoder.encode("admin"));
+			u1.setNome("Administrador");
+			u1.setRole("ROLE_ADMIN");
+			usuarioDAO.save(u1);
+
+			Empresa e1 = new Empresa();
+			e1.setEmail("empresa@empresa.com");
+			e1.setPassword(encoder.encode("empresa"));
+			e1.setNome("Empresa1");
+			e1.setRole("ROLE_EMPRESA");
+			e1.setCNPJ("00.000.000/0000-00");
+			e1.setCidade("Água Boa");
+			e1.setDescricao("Melhor empresa do mundo");
+			usuarioDAO.save(e1);
 			
 			// Usuario u2 = new Usuario();
 			// u2.setUsername("beltrano");

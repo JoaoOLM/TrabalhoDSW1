@@ -43,7 +43,7 @@ public class WebSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests((authz) -> authz
-						.requestMatchers("/error", "/login/**", "/js/**").permitAll()
+						.requestMatchers("/error", "/login/**", "/js/**", "/home/**").permitAll()
 						.requestMatchers("/css/**", "/image/**", "/webjars/**").permitAll()
 						.requestMatchers("/vagas/**").hasRole("PROFISSIONAL")
 						.requestMatchers("/candidaturas/**").hasRole("EMPRESA")
