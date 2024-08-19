@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import br.ufscar.dc.dsw.domain.Livro;
+import br.ufscar.dc.dsw.domain.Vaga;
 
 @SuppressWarnings("unchecked")
-public interface ILivroDAO extends CrudRepository<Livro, Long>{
+public interface IVagaDAO extends CrudRepository<Vaga, Long>{
 
-	Livro findById(long id);
+	Vaga findById(long id);
 
-	List<Livro> findAll();
+	List<Vaga> findAll();
 	
-	Livro save(Livro livro);
+	Vaga save(Vaga vaga);
 
 	void deleteById(Long id);
 }
