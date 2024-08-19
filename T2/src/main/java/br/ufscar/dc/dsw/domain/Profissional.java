@@ -1,13 +1,10 @@
 package br.ufscar.dc.dsw.domain;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 
 @SuppressWarnings("serial")
 @Entity
@@ -41,16 +38,16 @@ public class Profissional extends Usuario {
         super.setId(id);
     }
 
-    public Profissional(String email, String nome, String senha, String role, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
-        super(email, nome, senha, role);
+    public Profissional(String email, String nome, String password, String role, String cpf, String telefone, Sexo sexo, String dataNascimento) {
+        super(email, nome, password, role);
         this.cpf = cpf;
         this.telefone = telefone;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
     }
 
-    public Profissional(Long id, String email, String nome, String senha, String role, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
-        super(id, email, nome, senha, role);
+    public Profissional(Long id, String email, String nome, String password, String role, String cpf, String telefone, Sexo sexo, String dataNascimento) {
+        super(id, email, nome, password, role);
         this.cpf = cpf;
         this.telefone = telefone;
         this.sexo = sexo;
@@ -83,11 +80,11 @@ public class Profissional extends Usuario {
         this.sexo = sexo;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }

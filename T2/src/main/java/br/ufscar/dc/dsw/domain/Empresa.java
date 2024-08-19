@@ -25,15 +25,15 @@ public class Empresa extends Usuario {
     public Empresa() {
     }
 
-    public Empresa(String email, String nome, String senha, String role, String CNPJ, String descricao, String cidade) {
-        super(email, nome, senha, role);
+    public Empresa(String email, String nome, String password, String role, String CNPJ, String descricao, String cidade) {
+        super(email, nome, password, role);
         this.CNPJ = CNPJ;
         this.descricao = descricao;
         this.cidade = cidade;
     }
 
-    public Empresa(Long id, String email, String nome, String senha, String role, String CNPJ, String descricao, String cidade) {
-        super(id, email, nome, senha, role);
+    public Empresa(Long id, String email, String nome, String password, String role, String CNPJ, String descricao, String cidade) {
+        super(id, email, nome, password, role);
         this.CNPJ = CNPJ;
         this.descricao = descricao;
         this.cidade = cidade;

@@ -2,6 +2,8 @@ package br.ufscar.dc.dsw.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +25,7 @@ public class Usuario extends AbstractEntity<Long> {
 
     @NotBlank
     @Column(nullable = false, length = 64)
-    private String senha;
+    private String password;
 
     @NotNull
     @Column(nullable = false)
@@ -36,18 +38,18 @@ public class Usuario extends AbstractEntity<Long> {
         super.setId(id);
     }
 
-    public Usuario(String email, String nome, String senha, String role) {
+    public Usuario(String email, String nome, String password, String role) {
         this.email = email;
         this.nome = nome;
-        this.senha = senha;
+        this.password = password;
         this.role = role;
     }
 
-    public Usuario(Long id, String email, String nome, String senha, String role) {
+    public Usuario(Long id, String email, String nome, String password, String role) {
         super.setId(id);
         this.email = email;
         this.nome = nome;
-        this.senha = senha;
+        this.password = password;
         this.role = role;
     }
 
@@ -67,15 +69,15 @@ public class Usuario extends AbstractEntity<Long> {
         this.nome = nome;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String role() {
+    public String getRole() {
         return role;
     }
 
