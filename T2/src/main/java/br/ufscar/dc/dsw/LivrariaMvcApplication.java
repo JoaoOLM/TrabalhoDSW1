@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.ufscar.dc.dsw.dao.IUsuarioDAO;
 import br.ufscar.dc.dsw.domain.Empresa;
+import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
 
 @SpringBootApplication
@@ -38,14 +39,16 @@ public class LivrariaMvcApplication {
 			e1.setDescricao("Melhor empresa do mundo");
 			usuarioDAO.save(e1);
 			
-			// Usuario u2 = new Usuario();
-			// u2.setUsername("beltrano");
-			// u2.setPassword(encoder.encode("123"));
-			// u2.setCPF("985.849.614-10");
-			// u2.setName("Beltrano Andrade");
-			// u2.setRole("ROLE_USER");
-			// u2.setEnabled(true);
-			// usuarioDAO.save(u2);
+			Profissional p1 = new Profissional();
+			p1.setEmail("profissional@profissional.com");
+			p1.setPassword(encoder.encode("profissional"));
+			p1.setNome("Profissional1");
+			p1.setRole("ROLE_PROFISSIONAL");
+			p1.setCpf("000.000.000-00");
+			p1.setTelefone("(00) 00000-0000");
+			p1.setSexo(1);
+			p1.setDataNascimento("00/00/0001");
+			usuarioDAO.save(p1);
 			
 			// Usuario u3 = new Usuario();
 			// u3.setUsername("fulano");

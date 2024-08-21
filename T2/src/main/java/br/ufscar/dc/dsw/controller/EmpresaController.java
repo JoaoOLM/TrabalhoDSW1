@@ -41,7 +41,7 @@ public class EmpresaController {
 
 		empresa.setRole("ROLE_EMPRESA");
 		empresa.setPassword(encoder.encode(empresa.getPassword()));
-		
+
 		if (result.hasErrors()) {
 			return "empresa/cadastro";
 		}
@@ -68,7 +68,7 @@ public class EmpresaController {
 
 		service.salvar(empresa);
 		attr.addFlashAttribute("sucess", "empresa.edit.sucess");
-		return "redirect:/empresas/listar";
+		return "redirect:/empresa/listar";
 	}
 	
 	@GetMapping("/excluir/{id}")

@@ -32,7 +32,7 @@ public class Profissional extends Usuario {
     private String dataNascimento;
 
     private String role = "ROLE_EMPRESA";
-    
+
     public Profissional() {
     }
 
@@ -78,8 +78,12 @@ public class Profissional extends Usuario {
         return sexo;
     }
 
-    public void setSexo(Sexo sexo) {
-        this.sexo = sexo;
+    public void setSexo(Integer sexo) {
+        if (sexo != null && sexo >= 0 && sexo < Sexo.values().length) {
+            this.sexo = Sexo.values()[sexo];
+        } else {
+            throw new IllegalArgumentException("Valor inválido para sexo: " + sexo);
+        }
     }
 
     public String getDataNascimento() {
