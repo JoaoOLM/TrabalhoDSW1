@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+
+        <nav class="navbar navbar-expand-md bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active"><i class="oi oi-caret-right"></i>
+                        <span th:text="#{vaga.cadastrar.label}"></span></li>
+                </ul>
+                <a class="btn btn-primary btn-md" th:href="@{/empresas/minhasVagas}" role="button">
+                    <span class="oi oi-spreadsheet" title="Listar" aria-hidden="true"></span>
+                    <span th:text="#{vagas.listar.label}"></span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="container" id="cadastro">
+
+            <div th:replace="fragments/alert"></div>
+
+            <form th:action="${vaga.id == null} ? @{/vagas/salvar} : @{/vagas/editar}" th:object="${vaga}" method="POST">
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label th:text="#{vaga.remuneracao}" for="remuneracao"></label>
+                        <input type="text" class="form-control" id="remuneracao" th:placeholder="#{vaga.remuneracao}" 
+                               th:field="*{remuneracao}" th:classappend="${#fields.hasErrors('remuneracao')} ? is-invalid" 
+                               data-mask="000000.00" data-mask-reverse="true"/>
+
+                        <div class="invalid-feedback">
+                            <span th:errors="*{remuneracao}"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label th:text="#{vaga.descricao}" for="descricao"></label>
+                        <input type="text" class="form-control" id="descricao" th:placeholder="#{vaga.descricao}" 
+                               th:field="*{descricao}" th:classappend="${#fields.hasErrors('descricao')} ? is-invalid" />
+
+                        <div class="invalid-feedback">
+                            <span th:errors="*{descricao}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label th:text="#{vaga.datalimiteInscricao}" for="dataLimiteInscricao"></label>
+                        <input type="date" class="form-control" id="dataLimiteInscricao" 
+                               th:field="*{dataLimiteInscricao}" th:placeholder="#{vaga.datalimite}" 
+                               th:classappend="${#fields.hasErrors('dataLimiteInscricao')} ? is-invalid" />
+
+                        <div class="invalid-feedback">
+                            <span th:errors="*{dataLimiteInscricao}"></span>
+                        </div>
+                    </div>
+
+                    <input type="hidden" th:field="*{dataCriacao}" />
+                </div>
+                
+                <input type="hidden" id="id" th:field="*{id}" />
+                <input type="hidden" th:field="*{empresa}" id="empresa"/>
+                <button type="submit" th:text="#{button.salvar.label}" class="btn btn-primary btn-sm"></button>
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>
