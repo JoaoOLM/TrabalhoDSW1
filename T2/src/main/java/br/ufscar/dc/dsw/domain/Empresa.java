@@ -3,8 +3,11 @@ package br.ufscar.dc.dsw.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
+
+import java.util.List;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Empresa")
@@ -21,6 +24,9 @@ public class Empresa extends Usuario {
     @NotBlank
     @Column(nullable = false, length = 100)
     private String cidade;
+
+    @OneToMany(mappedBy = "empresa")
+	private List<Vaga> vagas;
 
     public Empresa() {
     }
@@ -64,4 +70,12 @@ public class Empresa extends Usuario {
     public void setCidade(String cidade) {
         this.cidade = cidade;
     }
+
+    public List<Vaga> getVagas() {
+		return vagas;
+	}
+
+	public void setVagas(List<Vaga> vagas) {
+		this.vagas = vagas;
+	}
 }
