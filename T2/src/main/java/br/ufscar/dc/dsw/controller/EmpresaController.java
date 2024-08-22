@@ -10,8 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import br.ufscar.dc.dsw.domain.Empresa;
+
+import br.ufscar.dc.dsw.security.UsuarioDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
+import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.Candidatura;
+import br.ufscar.dc.dsw.dao.IVagaDAO;
+import br.ufscar.dc.dsw.dao.ICandidaturaDAO;
+import br.ufscar.dc.dsw.dao.IEmpresaDAO;
+import br.ufscar.dc.dsw.dao.IUsuarioDAO;
 import br.ufscar.dc.dsw.service.spec.IEmpresaService;
 import jakarta.validation.Valid;
 
@@ -20,10 +28,28 @@ import jakarta.validation.Valid;
 public class EmpresaController {
 	
 	@Autowired
+	private IVagaDAO vagasDAO;
+
+    @Autowired
+	private IEmpresaDAO empresaDAO;
+
+    @Autowired
+	private IUsuarioDAO usuarioDAO;
+	
+    @Autowired
+	private ICandidaturaDAO candidaturaDAO;
+
+	@Autowired
 	private IEmpresaService service;
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+
+	private Empresa getEmpresa(){
+        UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Usuario user = usuarioDetails.getUsuario();
+        return service.buscarPorId(user.getId());
+    }
 	
 	@GetMapping("/cadastrar")
 	public String cadastrar(Empresa empresa) {
@@ -39,7 +65,6 @@ public class EmpresaController {
 	@PostMapping("/salvar")
 	public String salvar(@Valid Empresa empresa, BindingResult result, RedirectAttributes attr) {
 
-		empresa.setRole("ROLE_EMPRESA");
 		empresa.setPassword(encoder.encode(empresa.getPassword()));
 
 		if (result.hasErrors()) {
@@ -59,12 +84,10 @@ public class EmpresaController {
 	
 	@PostMapping("/editar")
 	public String editar(@Valid Empresa empresa, BindingResult result, RedirectAttributes attr) {
-		
-		// Apenas rejeita se o problema não for com o CNPJ (CNPJ campo read-only) 
-		
-		if (result.getFieldErrorCount() > 1 || result.getFieldError("CNPJ") == null) {
-			return "empresa/cadastro";
-		}
+				
+		// if (result.getFieldErrorCount() > 1 || result.getFieldError("CNPJ") == null) {
+		// 	return "empresa/cadastro";
+		// }
 
 		service.salvar(empresa);
 		attr.addFlashAttribute("sucess", "empresa.edit.sucess");
@@ -75,5 +98,11 @@ public class EmpresaController {
 	public String excluir(@PathVariable("id") Long id, ModelMap model) {
 		service.excluir(id);
 		return listar(model);
+	}
+
+	@GetMapping("/vagas") // vagas da empresa
+	public String minhasVagas(ModelMap model) {
+		model.addAttribute("vagas", vagasDAO.findByEmpresa(getEmpresa()));
+		return "empresa/vagas";
 	}
 }

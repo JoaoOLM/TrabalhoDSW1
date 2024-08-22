@@ -46,7 +46,7 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{usuario.password.label}" for="password"></label>
-                        <input type="password" class="form-control" id="password" th:field="*{password}" th:placeholder="#{usuario.password.label}" th:classappend="${#fields.hasErrors('password')} ? is-invalid" />
+                        <input type="text" class="form-control" id="password" th:field="*{password}" th:placeholder="#{usuario.password.label}" th:classappend="${#fields.hasErrors('password')} ? is-invalid" th:readonly="${empresa.id != null}"/>
                         <div class="invalid-feedback">
                             <span th:errors="*{password}"></span>
                         </div>
@@ -54,7 +54,7 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{empresa.cnpj.label}" for="CNPJ"></label>
-                        <input type="text" class="form-control" id="CNPJ" th:field="*{CNPJ}" placeholder="__.___.___/____-__" data-mask="00.000.000/0000-00" data-mask-reverse="true" th:classappend="${#fields.hasErrors('CNPJ')} ? is-invalid" />
+                        <input type="text" class="form-control" id="CNPJ" th:field="*{CNPJ}" placeholder="__.___.___/____-__" data-mask="00.000.000/0000-00" data-mask-reverse="true" th:classappend="${#fields.hasErrors('CNPJ')} ? is-invalid" th:readonly="${empresa.id != null}"/>
                         <div class="invalid-feedback">
                             <span th:errors="*{CNPJ}"></span>
                         </div>
@@ -77,6 +77,8 @@
                     </div>
                 </div>
 
+                <input type="hidden" id="role" th:field="*{role}" />
+                <input type="hidden" id="id" th:field="*{id}" />
                 <button type="submit" th:text="#{button.salvar.label}" class="btn btn-primary btn-sm"></button>
             </form>
         </div>

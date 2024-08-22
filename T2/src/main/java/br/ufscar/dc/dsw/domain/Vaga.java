@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -39,6 +41,9 @@ public class Vaga extends AbstractEntity<Long> {
     @NotNull
     @Column(nullable = false)
     private Timestamp dataCriacao = new Timestamp(System.currentTimeMillis());
+
+    @OneToMany(mappedBy = "vaga")
+	private List<Candidatura> candidaturas;
 
     // Construtores
 
@@ -102,4 +107,12 @@ public class Vaga extends AbstractEntity<Long> {
     public void setDataCriacao(Timestamp dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
+
+    public List<Candidatura> getCandidaturas(){
+		return candidaturas;
+	}
+	
+	public void setCandidaturas(List<Candidatura> candidaturas) {
+		this.candidaturas = candidaturas;
+	}
 }
