@@ -103,6 +103,6 @@ public class EmpresaController {
 	@GetMapping("/vagas") // vagas da empresa
 	public String minhasVagas(ModelMap model) {
 		model.addAttribute("vagas", vagasDAO.findByEmpresa(getEmpresa()));
-		return "empresa/vagas";
+		return "vagas/minhasVagas";
 	}
 }
