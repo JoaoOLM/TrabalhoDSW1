@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.dao;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import br.ufscar.dc.dsw.domain.Empresa;
@@ -10,6 +11,8 @@ import br.ufscar.dc.dsw.domain.Empresa;
 public interface IEmpresaDAO extends CrudRepository<Empresa, Long>{
 
 	Empresa findById(long id);
+
+	Empresa findByEmail(String email);
 	
 	Empresa findByCNPJ (String CNPJ);
 
@@ -18,4 +21,7 @@ public interface IEmpresaDAO extends CrudRepository<Empresa, Long>{
 	Empresa save(Empresa empresa);
 
 	void deleteById(Long id);
+
+	@Query("SELECT DISTINCT e.cidade FROM Empresa e")
+	List<String> findDistinctCidades();
 }

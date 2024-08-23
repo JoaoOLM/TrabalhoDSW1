@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.ufscar.dc.dsw.dao.IEmpresaDAO;
+import br.ufscar.dc.dsw.dao.IVagaDAO;
 import br.ufscar.dc.dsw.domain.Empresa;
+import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.service.spec.IEmpresaService;
 
 @Service
@@ -16,6 +18,9 @@ public class EmpresaService implements IEmpresaService {
 
 	@Autowired
 	IEmpresaDAO dao;
+
+	@Autowired
+	IVagaDAO vagaDAO;
 	
 	public void salvar(Empresa Empresa) {
 		dao.save(Empresa);
@@ -31,7 +36,29 @@ public class EmpresaService implements IEmpresaService {
 	}
 
 	@Transactional(readOnly = true)
+	public Empresa buscarPorEmail(String email) {
+		return dao.findByEmail(email);
+	}
+
+	@Transactional(readOnly = true)
 	public List<Empresa> buscarTodos() {
 		return dao.findAll();
+	}
+
+	@Transactional(readOnly = true)
+	public boolean empresaTemVagas(Long id) {
+		return !dao.findById(id.longValue()).getVagas().isEmpty(); 
+	}
+
+	@Transactional(readOnly = true)
+	public void excluirVagasPorEmpresa(Empresa empresa) {
+		for (Vaga vaga : empresa.getVagas()) {
+			vagaDAO.deleteById(vaga.getId());
+		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<String> buscarTodasCidades() {
+		return dao.findDistinctCidades();
 	}
 }

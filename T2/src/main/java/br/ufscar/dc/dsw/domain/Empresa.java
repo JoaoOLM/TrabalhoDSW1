@@ -1,13 +1,13 @@
 package br.ufscar.dc.dsw.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-
-
-import java.util.List;
+import jakarta.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Empresa")
@@ -15,6 +15,7 @@ public class Empresa extends Usuario {
 
     @NotBlank
     @Column(nullable = false, length = 18, unique = true)
+    @Size(min = 18, max = 18, message = "{Size.empresa.CNPJ}")
     private String CNPJ;
 
     @NotBlank

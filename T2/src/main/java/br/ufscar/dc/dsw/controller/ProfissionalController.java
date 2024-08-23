@@ -60,21 +60,11 @@ public class ProfissionalController {
     @PostMapping("/editar")
     public String editar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr) {
 
+        profissional.setRole("ROLE_PROFISSIONAL");
+
         if (result.hasErrors()) {
             return "profissional/cadastro";
         }
-
-        // Busque o profissional original no banco de dados
-        Profissional profissionalOriginal = profissionalService.buscarPorId(profissional.getId());
-
-        // Verifique se a senha foi alterada
-        if (!profissionalOriginal.getPassword().equals(profissional.getPassword())) {
-            profissional.setPassword(encoder.encode(profissional.getPassword()));
-        } else {
-            profissional.setPassword(profissionalOriginal.getPassword());
-        }
-
-        profissional.setRole("ROLE_PROFISSIONAL");
 
         profissionalService.salvar(profissional);
         attr.addFlashAttribute("sucess", "profissional.edit.sucess");

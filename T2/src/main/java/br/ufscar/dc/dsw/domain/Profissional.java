@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("serial")
 @Entity
@@ -17,10 +18,12 @@ public class Profissional extends Usuario {
 
     @NotBlank
     @Column(nullable = false, length = 14, unique = true)
+    @Size(min = 14, max = 14, message = "{Size.profissional.CPF}")
     private String cpf;
 
     @NotBlank
     @Column(nullable = false, length = 15)
+    @Size(min = 15, max = 15, message = "{Size.profissional.telefone}")
     private String telefone;
 
     @NotNull
@@ -28,10 +31,9 @@ public class Profissional extends Usuario {
     private Sexo sexo;
 
     @NotNull
-    @Column(nullable = false, length = 19)
+    @Column(nullable = false, length = 10)
+    @Size(min = 10, max = 10, message = "{Size.profissional.dataNascimento}")
     private String dataNascimento;
-
-    private String role = "ROLE_EMPRESA";
 
     public Profissional() {
     }
@@ -78,12 +80,8 @@ public class Profissional extends Usuario {
         return sexo;
     }
 
-    public void setSexo(Integer sexo) {
-        if (sexo != null && sexo >= 0 && sexo < Sexo.values().length) {
-            this.sexo = Sexo.values()[sexo];
-        } else {
-            throw new IllegalArgumentException("Valor inválido para sexo: " + sexo);
-        }
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
     public String getDataNascimento() {

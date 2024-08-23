@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.domain.Empresa;
+import br.ufscar.dc.dsw.domain.Vaga;
 
 @SuppressWarnings("unchecked")
 public interface IVagaDAO extends CrudRepository<Vaga, Long>{
@@ -19,4 +19,6 @@ public interface IVagaDAO extends CrudRepository<Vaga, Long>{
 	void deleteById(Long id);
 
     List<Vaga> findByEmpresa(Empresa empresa);
+
+	List<Vaga> findByEmpresaCidade(String cidade);
 }
