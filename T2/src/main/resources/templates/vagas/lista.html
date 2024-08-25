@@ -25,65 +25,9 @@
         </nav>
 
         <div class="container" id="listagem">
-            <div th:replace="fragments/alert"></div>
-            <div th:fragment="content">
-                <!-- Formulário para filtrar por cidade -->
-                <form class="form-group form-inline ml-auto" th:action="@{/filtrar}" method="get">
-                    <div class="form-group">
-                        <label for="cidadeFiltro" th:text="#{vaga.cidade.filtro.label}"></label>
-                        <select class="form-control" id="cidadeFiltro" name="cidade">
-                            <option value="" th:text="#{vaga.cidade.filtro.todos}"></option>
-                            <option th:each="cidade : ${cidades}" th:value="${cidade}" th:text="${cidade}"></option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-secondary ml-2">
-                        <span th:text="#{vaga.cidade.filtro.botao.label}">Filtrar</span>
-                    </button>
-                </form>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th th:text="#{vaga.descricao}"></th>
-                                <th th:text="#{vaga.remuneracao}"></th>
-                                <th th:text="#{vaga.datalimiteInscricao}"></th>
-                                <th th:text="#{vaga.empresa}"></th>
-                                <th th:text="#{empresa.cidade.label}"></th>
-                                <th th:text="#{acao.label}"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="vaga : ${vagas}">
-                                <td th:text="${vaga.id}"></td>
-                                <td th:text="${vaga.descricao}"></td>
-                                <td th:text="|R$ ${#numbers.formatDecimal(vaga.remuneracao, 2, 2, 'COMMA')}|"></td>
-                                <td th:text="${vaga.dataLimiteInscricao}"></td>
-                                <td th:text="${vaga.empresa.nome}"></td>
-                                <td th:text="${vaga.empresa.cidade}"></td>
-                                <td>
-                                    <!-- Ações visíveis apenas se a vaga pertencer à empresa logada -->
-                                    <div sec:authorize="hasRole('ROLE_EMPRESA')" th:if="${vaga.empresa.email == empresaLogada}">
-                                        <a th:href="@{/vagas/editar/{id}(id=${vaga.id})}" class="btn btn-warning btn-sm">
-                                            <span class="oi oi-pencil" title="Editar" aria-hidden="true"></span>
-                                        </a>
-                                        <a th:href="@{/vagas/excluir/{id}(id=${vaga.id})}" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Tem certeza que deseja excluir esta vaga?');">
-                                            <span class="oi oi-trash" title="Excluir" aria-hidden="true"></span>
-                                        </a>
-                                    </div>
-                                    <!-- Botão para candidatar-se visível apenas para profissionais -->
-                                    <div sec:authorize="hasRole('ROLE_PROFISSIONAL')">
-                                        <a th:href="@{/vagas/candidatar/{id}(id=${vaga.id})}" class="btn btn-success btn-sm">
-                                            <span class="oi oi-check" title="Candidatar-se" aria-hidden="true"></span>
-                                            <span th:text="#{vaga.candidatar.label}">Candidatar-se</span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="container" id="listagem">
+                <div th:replace="fragments/alert"></div>
+                <div th:replace="fragments/vaga-listagem :: content"></div>
             </div>
         </div>
         <div th:replace="fragments/modal :: modal"></div>

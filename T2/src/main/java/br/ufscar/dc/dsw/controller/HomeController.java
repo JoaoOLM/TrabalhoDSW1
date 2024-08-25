@@ -28,6 +28,7 @@ public class HomeController {
         String empresaLogada = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("vagas", vagaService.buscarTodos());
         model.addAttribute("empresaLogada", empresaLogada);
+        model.addAttribute("cidades", empresaService.buscarTodasCidades());
         return "home"; 
     }
 
