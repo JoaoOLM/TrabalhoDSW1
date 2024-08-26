@@ -94,7 +94,15 @@ public class EstagioMvcApplication {
             p1.setCpf("000.000.000-00");
             p1.setTelefone("(00) 00000-0000");
             p1.setSexo(Sexo.FEMININO);
-            p1.setDataNascimento("0001-01-01");
+            // Definindo a data limite de inscrição usando SimpleDateFormat
+            sdf = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date utilDate = sdf.parse("01-01-0001");
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Convertendo java.util.Date para java.sql.Date
+                p1.setDataNascimento(sqlDate);
+            } catch (ParseException e) {
+                e.printStackTrace(); // Trate a exceção conforme necessário
+            }
             usuarioDAO.save(p1);
 
         };

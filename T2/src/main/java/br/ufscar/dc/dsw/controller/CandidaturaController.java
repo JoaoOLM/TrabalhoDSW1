@@ -171,7 +171,7 @@ public class CandidaturaController {
         candidaturaService.salvar(candidatura);
 
         // Adicionar mensagem de sucesso e redirecionar
-        attr.addFlashAttribute("success", "Candidatura atualizada com sucesso.");
+        attr.addFlashAttribute("success", "candidatura.edit.sucess");
         return "redirect:/candidatura/listar";
     }
 
@@ -193,5 +193,12 @@ public class CandidaturaController {
         } catch (IOException e) {
             System.out.println("Error :- " + e.getMessage());
         }
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+        candidaturaService.excluir(id);
+        attr.addFlashAttribute("sucess", "candidatura.delete.sucess");
+        return "redirect:/candidatura/listar";
     }
 }

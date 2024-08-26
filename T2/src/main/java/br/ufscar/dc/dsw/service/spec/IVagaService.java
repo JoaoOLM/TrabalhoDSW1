@@ -15,4 +15,6 @@ public interface IVagaService {
 	void excluir(Long id);
 
 	List<Vaga> buscarPorCidade(String cidade);
+
+	List<Vaga> buscarVagasNaoCandidatadasPorProfissional(Long profissionalId);
 }

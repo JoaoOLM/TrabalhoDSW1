@@ -56,6 +56,7 @@ public class VagasController {
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
 		//fazer metodo para listar todas as abertas
+		
 
 		return "vagas/lista";
 	}

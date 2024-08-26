@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufscar.dc.dsw.dao.ICandidaturaDAO;
 import br.ufscar.dc.dsw.dao.IVagaDAO;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.service.spec.IVagaService;
@@ -16,6 +17,9 @@ public class VagaService implements IVagaService {
 
 	@Autowired
 	IVagaDAO dao;
+
+	@Autowired
+	ICandidaturaDAO candidaturaDAO;
 	
 	public void salvar(Vaga vaga) {
 		dao.save(vaga);
@@ -36,7 +40,12 @@ public class VagaService implements IVagaService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Vaga> buscarPorCidade(String cidade) {
+	public List<Vaga> buscarPorCidade(String cidade) {		
 		return dao.findByEmpresaCidade(cidade);
 	}
+
+	@Transactional (readOnly = true)
+    public List<Vaga> buscarVagasNaoCandidatadasPorProfissional(Long profissionalId) {
+        return dao.findVagasNaoCandidatadasPorProfissional(profissionalId);
+    }
 }

@@ -98,8 +98,8 @@
 
                     <div class="form-group col-md-6">
                         <label th:text="#{profissional.dataNascimento.label}" for="dataNascimento"></label> 
-                        <input type="date" class="form-control" id="dataNascimento" placeholder="XX/XX/XXXX"
-                               th:field="*{dataNascimento}" th:classappend="${#fields.hasErrors('dataNascimento')} ? is-invalid" />
+                        <input type="date" class="form-control" id="dataNascimento" placeholder="  /  /    " max="9999-12-31"
+                               th:field="*{dataNascimento}" th:classappend="${#fields.hasErrors('dataNascimento')} ? is-invalid" required/>
                         
                         <div class="invalid-feedback">
                             <span th:errors="*{dataNascimento}"></span>
