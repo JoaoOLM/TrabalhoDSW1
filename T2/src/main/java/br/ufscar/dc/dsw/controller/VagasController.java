@@ -18,6 +18,7 @@ import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 import br.ufscar.dc.dsw.service.spec.IEmpresaService;
+import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import br.ufscar.dc.dsw.service.spec.IVagaService;
 import jakarta.validation.Valid;
 
@@ -34,6 +35,9 @@ public class VagasController {
 
     @Autowired
 	private IEmpresaService empresaService;
+
+	@Autowired
+	private IUsuarioService usuarioService;
 
 	private Empresa getEmpresa(){
         UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -79,10 +83,10 @@ public class VagasController {
 
         // Obtenha a empresa autenticada
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Empresa empresaAutenticada = empresaService.buscarPorEmail(auth.getName());
+        Usuario usuarioAutenticado = usuarioService.buscarPorEmail(auth.getName());
 
         // Verifique se a empresa autenticada é a proprietária da vaga
-        if (vaga.getEmpresa().getId().equals(empresaAutenticada.getId())) {
+        if (vaga.getEmpresa().getId().equals(usuarioAutenticado.getId())) {
             model.addAttribute("vaga", vaga);
             return "vagas/cadastro";
         } else {

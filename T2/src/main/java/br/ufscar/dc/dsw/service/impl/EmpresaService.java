@@ -36,11 +36,6 @@ public class EmpresaService implements IEmpresaService {
 	}
 
 	@Transactional(readOnly = true)
-	public Empresa buscarPorEmail(String email) {
-		return dao.findByEmail(email);
-	}
-
-	@Transactional(readOnly = true)
 	public List<Empresa> buscarTodos() {
 		return dao.findAll();
 	}

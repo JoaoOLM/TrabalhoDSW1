@@ -1,10 +1,18 @@
 package br.ufscar.dc.dsw.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 import java.sql.Timestamp;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,9 +35,10 @@ public class Candidatura extends AbstractEntity<Long> {
     @JoinColumn(name = "profissional_id", nullable = false)
     private Profissional profissional;
 
-    @NotBlank
-    @Column(nullable = false, length = 255)
-    private String arquivoCurriculo;
+    @Lob
+	@Basic
+	@Column(length = 10485760) // 1MB
+	private byte[] arquivoCurriculo;
 
     @NotNull
     @Column(nullable = false)
@@ -41,17 +50,16 @@ public class Candidatura extends AbstractEntity<Long> {
     private Status status = Status.ABERTO;
 
     // Construtores
-
     public Candidatura() {
     }
 
-    public Candidatura(Vaga vaga, Profissional profissional, String arquivoCurriculo) {
+    public Candidatura(Vaga vaga, Profissional profissional, byte[] arquivoCurriculo) {
         this.vaga = vaga;
         this.profissional = profissional;
         this.arquivoCurriculo = arquivoCurriculo;
     }
 
-    public Candidatura(Vaga vaga, Profissional profissional, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {
+    public Candidatura(Vaga vaga, Profissional profissional, byte[] arquivoCurriculo, Timestamp dataCandidatura, Status status) {
         this.vaga = vaga;
         this.profissional = profissional;
         this.arquivoCurriculo = arquivoCurriculo;
@@ -60,7 +68,6 @@ public class Candidatura extends AbstractEntity<Long> {
     }
 
     // Getters e Setters
-
     public Vaga getVaga() {
         return vaga;
     }
@@ -77,11 +84,11 @@ public class Candidatura extends AbstractEntity<Long> {
         this.profissional = profissional;
     }
 
-    public String getArquivoCurriculo() {
+    public byte[] getArquivoCurriculo() {
         return arquivoCurriculo;
     }
 
-    public void setArquivoCurriculo(String arquivoCurriculo) {
+    public void setArquivoCurriculo(byte[] arquivoCurriculo) {
         this.arquivoCurriculo = arquivoCurriculo;
     }
 

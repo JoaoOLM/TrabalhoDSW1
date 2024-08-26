@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+        <nav class="navbar navbar-expand-md bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <i class="oi oi-caret-right"></i>
+                        <span th:text="#{candidatura.listar.label}"></span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Profissional</th>
+                        <th>Vaga</th>
+                        <th>Data de Inscrição</th>
+                        <th>Arquivo</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="candidatura : ${candidaturas}">
+                        <td th:text="${candidatura.id}"></td>
+                        <td th:text="${candidatura.profissional.nome}"></td>
+                        <td th:text="${candidatura.vaga.descricao}"></td>
+                        <td th:text="${candidatura.dataCandidatura}"></td>
+                        <td><a th:href="@{/candidatura/download/{id} (id=${candidatura.id}) }"
+                                th:text="#{candidatura.file.label}"></a></td>
+                        <td th:text="${candidatura.status}"></td>
+                        <td>
+                            <!-- Ações visíveis apenas para empresa -->
+                            <div sec:authorize="hasRole('ROLE_EMPRESA')">
+                                <a th:href="@{/candidatura/editar/{id}(id=${candidatura.id})}" class="btn btn-warning btn-sm">
+                                    <span class="oi oi-pencil" title="Editar" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                            <!-- Ações visíveis apenas para profissional -->
+                            <div sec:authorize="hasRole('ROLE_PROFISSIONAL')">
+                                <a th:href="@{/candidatura/excluir/{id}(id=${candidatura.id})}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Tem certeza que deseja excluir esta vaga?');">
+                                <span class="oi oi-trash" title="Excluir" aria-hidden="true"></span>
+                            </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+
+</html>

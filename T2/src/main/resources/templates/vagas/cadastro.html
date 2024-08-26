@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label th:text="#{vaga.datalimiteInscricao}" for="dataLimiteInscricao"></label>
+                        <label th:text="#{vaga.dataLimiteInscricao}" for="dataLimiteInscricao"></label>
                         <input type="date" class="form-control" id="dataLimiteInscricao" 
                                th:field="*{dataLimiteInscricao}" th:placeholder="#{vaga.datalimite}" 
                                th:classappend="${#fields.hasErrors('dataLimiteInscricao')} ? is-invalid" />

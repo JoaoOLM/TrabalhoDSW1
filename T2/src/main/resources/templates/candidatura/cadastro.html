@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <i class="oi oi-caret-right"></i>
+                        <span th:text="#{candidatura.cadastrar.label}"></span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            <div class="mb-4 border-bottom pb-2">
+                <h2 th:text="${vaga.descricao}"></h2>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4 th:text="#{vaga.remuneracao} + ': R$ ' + ${vaga.remuneracao}"></h4>
+                    <h4 th:text="#{vaga.empresa} + ': ' + ${vaga.empresa.nome}"></h4>
+                    <h4 th:text="#{vaga.dataLimiteInscricao} + ': ' + ${vaga.dataLimiteInscricao}"></h4>
+                </div>
+            </div>
+
+            <form th:action="@{/candidatura/salvar}" method="post" enctype="multipart/form-data">
+                <!-- Campo oculto para ID da vaga -->
+                <input type="hidden" name="vagaId" th:value="${vaga.id}" />
+                
+                <div class="form-group">
+                    <label th:text="#{candidatura.upload.label}" for="arquivoCurriculo">Envie seu Currículo (PDF):</label>
+                    <input type="file" class="form-control-file" id="arquivoCurriculo" name="arquivoCurriculo" accept="application/pdf" required>
+                </div>
+            
+                <button th:text="#{vaga.candidatar.label}" type="submit" class="btn btn-primary">Candidatar-se</button>
+            </form>
+            
+        </div>
+    </section>
+</body>
+</html>

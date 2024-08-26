@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufscar.dc.dsw.dao.ICandidaturaDAO;
-import br.ufscar.dc.dsw.dao.IEmpresaDAO;
-import br.ufscar.dc.dsw.dao.IUsuarioDAO;
 import br.ufscar.dc.dsw.dao.IVagaDAO;
 import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Usuario;
@@ -28,15 +25,6 @@ public class EmpresaController {
 	
 	@Autowired
 	private IVagaDAO vagasDAO;
-
-    @Autowired
-	private IEmpresaDAO empresaDAO;
-
-    @Autowired
-	private IUsuarioDAO usuarioDAO;
-	
-    @Autowired
-	private ICandidaturaDAO candidaturaDAO;
 
 	@Autowired
 	private IEmpresaService service;
