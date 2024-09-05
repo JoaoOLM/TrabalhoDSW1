@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <i class="oi oi-caret-right"></i>
+                        <span th:text="#{candidatura.edicao.label}"></span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            <form th:object="${candidatura}" th:action="@{/candidatura/email}" method="post">
+                <input type="hidden" name="id" th:value="${candidatura.id}" />
+                
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label th:text="#{candidatura.entrevista.horario}" for="horarioEntrevista"></label>
+                        <input type="datetime-local" class="form-control" id="horarioEntrevista" name="horarioEntrevista"
+                               th:field="*{horarioEntrevista}" required />
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label th:text="#{candidatura.entrevista.link}" for="linkVideoconferencia"></label>
+                        <input type="text" class="form-control" id="linkVideoconferencia" name="linkVideoconferencia"
+                               th:field="*{linkVideoconferencia}" required />
+                    </div>
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>

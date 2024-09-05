@@ -36,33 +36,28 @@
                     <h4 th:text="${candidatura.dataCandidatura}"></h4>
                 </div>
             </div>
-
-            <form th:action="@{/candidatura/editar}" method="post">
-                <input type="hidden" name="profissionalId" th:value="${candidatura.profissional.id}" />
-                <input type="hidden" name="vagaId" th:value="${candidatura.vaga.id}" /> 
-
+            
+            <form th:action="@{/candidatura/editar}" th:object="${candidatura}" method="POST">
+                <!-- Campos ocultos -->
+                <input type="hidden" name="id" th:value="${candidatura.id}" />
+                
                 <div class="form-group">
                     <label th:text="#{candidatura.status.label}" for="status">Status da Candidatura:</label>
                     <select class="form-control" id="status" name="status" required>
-                        <option value="ENTREVISTA" th:text="#{candidatura.status.entrevista}"></option>
-                        <option value="NAO_SELECIONADO" th:text="#{candidatura.status.naoSelecionado}"></option>
+                        <option value="ABERTO" th:text="#{candidatura.status.aberto}" 
+                                th:selected="${candidatura.status == 'ABERTO'}"></option>
+                        <option value="ENTREVISTA" th:text="#{candidatura.status.entrevista}" 
+                                th:selected="${candidatura.status == 'ENTREVISTA'}"></option>
+                        <option value="NAO_SELECIONADO" th:text="#{candidatura.status.naoSelecionado}" 
+                                th:selected="${candidatura.status == 'NAO_SELECIONADO'}"></option>
                     </select>
                 </div>
 
-                <div class="form-group" th:if="${candidatura.status == 'ENTREVISTA'}">
-                    <label th:text="#{candidatura.entrevista.horario.label}" for="horarioEntrevista">Horário da Entrevista:</label>
-                    <input type="datetime-local" class="form-control" id="horarioEntrevista" name="horarioEntrevista">
-                </div>
+                
 
-                <div class="form-group" th:if="${candidatura.status == 'ENTREVISTA'}">
-                    <label th:text="#{candidatura.entrevista.link.label}" for="linkVideoconferencia">Link da Videoconferência:</label>
-                    <input type="url" class="form-control" id="linkVideoconferencia" name="linkVideoconferencia">
-                </div>
-
-                <button th:text="#{candidatura.salvar.label}" type="submit" class="btn btn-primary">Salvar</button>
+                <button th:text="#{button.salvar.label}" type="submit" class="btn btn-primary">Salvar</button>
             </form>
-
-        </div> 
+        </div>
     </section>
 </body>
 

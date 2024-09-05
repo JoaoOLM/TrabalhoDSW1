@@ -12,9 +12,9 @@ import jakarta.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Empresa")
+@UniqueCNPJ (message = "{Unique.empresa.CNPJ}")
 public class Empresa extends Usuario {
 
-    @UniqueCNPJ (message = "{Unique.empresa.CNPJ}")
     @NotBlank
     @Column(nullable = false, length = 18, unique = true)
     @Size(min = 18, max = 18, message = "{Size.empresa.CNPJ}")

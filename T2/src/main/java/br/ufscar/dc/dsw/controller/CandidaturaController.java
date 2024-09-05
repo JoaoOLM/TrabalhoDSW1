@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,11 +24,14 @@ import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
+import br.ufscar.dc.dsw.service.impl.EmailService;
 import br.ufscar.dc.dsw.service.spec.ICandidaturaService;
 import br.ufscar.dc.dsw.service.spec.IEmpresaService;
 import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import br.ufscar.dc.dsw.service.spec.IVagaService;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -49,6 +53,9 @@ public class CandidaturaController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private EmailService emailService;
 
     private Usuario getUsuarioAutenticado() {
         UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -72,38 +79,33 @@ public class CandidaturaController {
     public String cadastrar(@PathVariable("vagaId") Long vagaId, ModelMap model) {
         Vaga vaga = vagaService.buscarPorId(vagaId);
         if (vaga == null) {
-            System.out.println("Vaga não encontrada");
+            model.addAttribute("error", "Vaga não encontrada.");
             return "redirect:/error";
         }
         model.addAttribute("vaga", vaga);
-
         return "candidatura/cadastro";
     }
 
     @PostMapping("/salvar")
     public String salvar(@RequestParam(name = "vagaId") Long vagaId, @RequestParam(name = "arquivoCurriculo") MultipartFile arquivoCurriculo, RedirectAttributes attr) throws IOException {
 
-        // Obtém a vaga pelo ID
         Vaga vaga = vagaService.buscarPorId(vagaId);
         if (vaga == null) {
             attr.addFlashAttribute("error", "Vaga não encontrada.");
             return "redirect:/candidatura/cadastrar/" + vagaId;
         }
 
-        // Cria a candidatura
         Candidatura candidatura = new Candidatura();
         candidatura.setVaga(vaga);
         Profissional profissional = this.getProfissionalAutenticado();
         candidatura.setProfissional(profissional);
 
-        // Verifica se o profissional já se candidatou a esta vaga
         Optional<Candidatura> candidaturaExistente = candidaturaService.buscarPorVagaEProfissional(vaga, profissional);
         if (candidaturaExistente.isPresent()) {
             attr.addFlashAttribute("error", "Você já se candidatou a esta vaga.");
             return "redirect:/candidatura/cadastrar/" + vagaId;
         }
 
-        // Processa o arquivo do currículo
         if (!arquivoCurriculo.isEmpty()) {
             candidatura.setArquivoCurriculo(arquivoCurriculo.getBytes());
         }
@@ -133,62 +135,90 @@ public class CandidaturaController {
 
     @GetMapping("/editar/{id}")
     public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-
         Candidatura candidatura = candidaturaService.buscarPorId(id);
+        if (candidatura == null) {
+            model.addAttribute("error", "Candidatura não encontrada.");
+            return "redirect:/error";
+        }
+
         Vaga vaga = candidatura.getVaga();
         Empresa empresaAutenticada = getEmpresaAutenticado();
 
-        // Verifique se a empresa autenticada é a proprietária da vaga
-        if (vaga.getEmpresa().getId().equals(empresaAutenticada.getId())) {
-            model.addAttribute("candidatura", candidatura);
-            return "candidatura/edicao";
-        } else {
+        if (!vaga.getEmpresa().getId().equals(empresaAutenticada.getId())) {
             return "redirect:/error";
         }
+
+        model.addAttribute("candidatura", candidatura);
+        //model.addAttribute("vaga", vaga);
+        return "candidatura/edicao";
     }
 
     @PostMapping("/editar")
-    public String editar(@RequestParam("profissionalId") Long profissionalId,
-            @RequestParam("vagaId") Long vagaId,
-            @RequestParam("status") Integer status,
-            @RequestParam(value = "horarioEntrevista", required = false) LocalDateTime horarioEntrevista,
-            @RequestParam(value = "linkVideoconferencia", required = false) String linkVideoconferencia,
-            RedirectAttributes attr) {
-
-        Profissional profissional = profissionalService.buscarPorId(profissionalId);
-        Vaga vaga = vagaService.buscarPorId(vagaId);
-
-        // Carregar e atualizar a candidatura
-        Candidatura candidatura = candidaturaService.buscarPorVagaEProfissional(vaga, profissional).orElseThrow();
-        candidatura.setStatus(Status.values()[status]);
-
-        if (Status.ENTREVISTA.equals(Status.values()[status])) {
-            //Email aprovado
-        } else {
-            //Email recusado
+    public String editar(@RequestParam("id") Long id, @RequestParam("status") String status, RedirectAttributes attr, ModelMap model) throws UnsupportedEncodingException, AddressException {
+        Candidatura candidatura = candidaturaService.buscarPorId(id);
+        if (candidatura == null) {
+            model.addAttribute("error", "Candidatura não encontrada.");
+            return "redirect:/error";
         }
 
+        // Atualiza o status da candidatura
+        candidatura.setStatus(Status.valueOf(status));
+        candidaturaService.salvar(candidatura);
+        attr.addFlashAttribute("success", "Candidatura atualizada com sucesso.");
+
+        if (status.equals("ENTREVISTA")) {
+            // Passa a candidatura para o modelo para preencher o formulário corretamente
+            model.addAttribute("candidatura", candidatura);
+            return "candidatura/entrevista"; 
+        } else if (status.equals("NAO_SELECIONADO")) {
+            InternetAddress from = new InternetAddress("testearca092@gmail.com", "Email de Teste");
+            InternetAddress to = new InternetAddress(candidatura.getProfissional().getEmail());
+            String subject = "Candidatura não aprovada";
+            String body = "Sua candidatura para a vaga " + candidatura.getVaga().getDescricao() + " não foi aprovada.";
+            emailService.send(from, to, subject, body);
+        } 
+
+        return "redirect:/candidatura/listar/" + candidatura.getVaga().getId();
+    }
+
+    @PostMapping("/email")
+    public String email(@RequestParam("id") Long id,
+            @RequestParam(value = "horarioEntrevista") LocalDateTime horarioEntrevista,
+            @RequestParam(value = "linkVideoconferencia") String linkVideoconferencia,
+            ModelMap model ) throws UnsupportedEncodingException, AddressException {
+
+        Candidatura candidatura = candidaturaService.buscarPorId(id);
+        if (candidatura == null) {
+            model.addAttribute("error", "Candidatura não encontrada.");
+            return "redirect:/error";
+        }
+
+        candidatura.setHorarioEntrevista(horarioEntrevista);
+        candidatura.setLinkVideoconferencia(linkVideoconferencia);
         candidaturaService.salvar(candidatura);
 
-        // Adicionar mensagem de sucesso e redirecionar
-        attr.addFlashAttribute("success", "candidatura.edit.sucess");
-        return "redirect:/candidatura/listar";
+        // Enviar o email
+        InternetAddress from = new InternetAddress("testearca092@gmail.com", "Email de Teste");
+        InternetAddress to = new InternetAddress(candidatura.getProfissional().getEmail());
+        String subject = "Aproovado para entrevista";
+        String body = "Sua candidatura para a vaga " + candidatura.getVaga().getDescricao() + " foi aprovada para entrevista. O horário da entrevista é " + horarioEntrevista + " e o link para a videoconferência é " + linkVideoconferencia;
+        emailService.send(from, to, subject, body);
+
+        return "redirect:/candidatura/listar/" + candidatura.getVaga().getId();
     }
 
     @GetMapping(value = "/download/{id}")
     public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id) {
         Candidatura candidatura = candidaturaService.buscarPorId(id);
 
-        // set content type
+        if (candidatura == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         response.setContentType("application/pdf");
-
-        // add response header (caso queira forçar o download)
-        // response.addHeader("Content-Disposition", "attachment; filename=" + candidatura.getName());
         try {
-            // copies all bytes to an output stream
             response.getOutputStream().write(candidatura.getArquivoCurriculo());
-
-            // flushes output stream
             response.getOutputStream().flush();
         } catch (IOException e) {
             System.out.println("Error :- " + e.getMessage());
@@ -198,7 +228,7 @@ public class CandidaturaController {
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
         candidaturaService.excluir(id);
-        attr.addFlashAttribute("sucess", "candidatura.delete.sucess");
+        attr.addFlashAttribute("success", "Candidatura excluída com sucesso.");
         return "redirect:/candidatura/listar";
     }
 }

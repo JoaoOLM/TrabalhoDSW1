@@ -9,19 +9,20 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 @Component
-public class UniqueCNPJValidator implements ConstraintValidator<UniqueCNPJ, String> {
+public class UniqueCNPJValidator implements ConstraintValidator<UniqueCNPJ, Empresa> {
 
-	@Autowired
-	private IEmpresaDAO dao;
+    @Autowired
+    private IEmpresaDAO dao;
 
-	@Override
-	public boolean isValid(String CNPJ, ConstraintValidatorContext context) {
-		if (dao != null) {
-			Empresa empresa = dao.findByCNPJ(CNPJ);
-			return empresa == null;
-		} else {
-			return true;
-		}
-
-	}
+    @Override
+    public boolean isValid(Empresa empresa, ConstraintValidatorContext context) {
+        if (dao != null) {
+            Empresa existingEmpresa = dao.findByCNPJ(empresa.getCNPJ());
+            
+            // Verifica se o CNPJ pertence a uma empresa diferente
+            return existingEmpresa == null || existingEmpresa.getId().equals(empresa.getId());
+        } else {
+            return true;
+        }
+    }
 }

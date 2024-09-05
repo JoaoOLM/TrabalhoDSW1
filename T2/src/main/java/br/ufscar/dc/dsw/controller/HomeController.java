@@ -58,23 +58,32 @@ public class HomeController {
     }
 
     @GetMapping("/filtrar")
-	public String listarVagas(@RequestParam(value = "cidade", required = false) String cidade, ModelMap model) {
+    public String listarVagas(@RequestParam(value = "cidade", required = false) String cidade, ModelMap model) {
         List<Vaga> vagas;
         List<Vaga> vagasNC;
         Usuario usuario = getUsuarioAutenticado();
-        if (cidade != null && !cidade.isEmpty()) {
-            if (usuario.getRole().equals("ROLE_PROFISSIONAL")){
+        String empresaLogada = SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        if (usuario.getRole().equals("ROLE_PROFISSIONAL")) {
+            vagasNC = vagaService.buscarVagasNaoCandidatadasPorProfissional(usuario.getId());
+            if (cidade != null && !cidade.isEmpty()) {
                 vagas = vagaService.buscarPorCidade(cidade);
-                vagasNC = vagaService.buscarVagasNaoCandidatadasPorProfissional(usuario.getId());
                 vagas.retainAll(vagasNC);
             } else {
-                vagas = vagaService.buscarPorCidade(cidade);
+                vagas = vagaService.buscarTodos();
+                vagas.retainAll(vagasNC);
             }
-		} else {
-			vagas = vagaService.buscarTodos();
-		}
-		model.addAttribute("vagas", vagas);
-		model.addAttribute("cidades", empresaService.buscarTodasCidades()); 
-		return "home";
-	}
+        } else {
+            if (cidade != null && !cidade.isEmpty()) {
+                vagas = vagaService.buscarPorCidade(cidade);
+            } else {
+                vagas = vagaService.buscarTodos();
+            }
+        }
+        
+        model.addAttribute("empresaLogada", empresaLogada);
+        model.addAttribute("vagas", vagas);
+        model.addAttribute("cidades", empresaService.buscarTodasCidades()); 
+        return "home";
+    }
 }

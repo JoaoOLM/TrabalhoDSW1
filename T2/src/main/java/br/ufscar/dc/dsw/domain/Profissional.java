@@ -14,13 +14,13 @@ import jakarta.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Profissional")
+@UniqueCPF (message = "{Unique.profissional.CPF}")
 public class Profissional extends Usuario {
 
     public enum Sexo {
         MASCULINO, FEMININO, OUTRO
     }
 
-    @UniqueCPF (message = "{Unique.profissional.CPF}")
     @NotBlank
     @Column(nullable = false, length = 14, unique = true)
     @Size(min = 14, max = 14, message = "{Size.profissional.CPF}")

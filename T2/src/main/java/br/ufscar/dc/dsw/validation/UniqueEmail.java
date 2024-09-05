@@ -9,7 +9,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Constraint(validatedBy = UniqueEmailValidator.class)
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueEmail {
     String message() default "Email is already registered";
