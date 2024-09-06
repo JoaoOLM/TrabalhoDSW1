@@ -48,4 +48,9 @@ public class VagaService implements IVagaService {
     public List<Vaga> buscarVagasNaoCandidatadasPorProfissional(Long profissionalId) {
         return dao.findVagasNaoCandidatadasPorProfissional(profissionalId);
     }
+
+	@Transactional(readOnly = true)
+	public boolean vagaTemCandidaturas(Long id) {
+		return !dao.findById(id.longValue()).getCandidaturas().isEmpty(); 
+	}
 }

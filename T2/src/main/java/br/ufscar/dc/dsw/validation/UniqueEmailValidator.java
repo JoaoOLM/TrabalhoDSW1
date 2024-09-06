@@ -9,18 +9,18 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 @Component
-public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, Usuario> {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
     @Autowired
     private IUsuarioDAO dao;
 
     @Override
-    public boolean isValid(Usuario usuario, ConstraintValidatorContext context) {
+    public boolean isValid(String email, ConstraintValidatorContext context) {
         if (dao != null) {
-            Usuario existingUsuario = dao.findByEmail(usuario.getEmail());
+            Usuario usuario = dao.findByEmail(email);
 
             // Verifica se o e-mail pertence a um usuário diferente
-            return existingUsuario == null || existingUsuario.getId().equals(usuario.getId());
+            return usuario == null;
         } else {
             return true;
         }

@@ -13,11 +13,11 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "Usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
-@UniqueEmail (message = "{Unique.usuario.email}")
 public class Usuario extends AbstractEntity<Long> {
 
     @NotBlank
     @Column(nullable = false, length = 64, unique = true)
+    @UniqueEmail (message = "{Unique.usuario.email}")
     private String email;
 
     @NotBlank

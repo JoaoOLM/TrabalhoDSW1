@@ -9,18 +9,18 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 @Component
-public class UniqueCPFValidator implements ConstraintValidator<UniqueCPF, Profissional> {
+public class UniqueCPFValidator implements ConstraintValidator<UniqueCPF, String> {
 
     @Autowired
     private IProfissionalDAO dao;
 
     @Override
-    public boolean isValid(Profissional profissional, ConstraintValidatorContext context) {
+    public boolean isValid(String CPF, ConstraintValidatorContext context) {
         if (dao != null) {
-            Profissional existingProfissional = dao.findByCpf(profissional.getCpf());
+            Profissional profissional = dao.findByCpf(CPF);
             
             // Verifica se o CPF pertence a um profissional diferente
-            return existingProfissional == null || existingProfissional.getId().equals(profissional.getId());
+            return profissional == null;
         } else {
             return true;
         }

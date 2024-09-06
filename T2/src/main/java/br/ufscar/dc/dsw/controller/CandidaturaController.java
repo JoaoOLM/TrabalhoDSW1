@@ -3,6 +3,7 @@ package br.ufscar.dc.dsw.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,13 @@ public class CandidaturaController {
             return "redirect:/candidatura/cadastrar/" + vagaId;
         }
 
+        // Verifica se o arquivo de currículo não está vazio e se o tamanho é menor que 10MB
         if (!arquivoCurriculo.isEmpty()) {
+            long maxSizeInBytes = 10 * 1024 * 1024; // 10MB em bytes
+            if (arquivoCurriculo.getSize() > maxSizeInBytes) {
+                attr.addFlashAttribute("error", "O currículo não pode ter mais de 10MB.");
+                return "redirect:/candidatura/cadastrar/" + vagaId;
+            }
             candidatura.setArquivoCurriculo(arquivoCurriculo.getBytes());
         }
 
@@ -149,7 +156,6 @@ public class CandidaturaController {
         }
 
         model.addAttribute("candidatura", candidatura);
-        //model.addAttribute("vaga", vaga);
         return "candidatura/edicao";
     }
 
@@ -167,25 +173,28 @@ public class CandidaturaController {
         attr.addFlashAttribute("success", "Candidatura atualizada com sucesso.");
 
         if (status.equals("ENTREVISTA")) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            String agora = LocalDateTime.now().format(formatter);
+            model.addAttribute("agora", agora);
             // Passa a candidatura para o modelo para preencher o formulário corretamente
             model.addAttribute("candidatura", candidatura);
-            return "candidatura/entrevista"; 
+            return "candidatura/entrevista";
         } else if (status.equals("NAO_SELECIONADO")) {
             InternetAddress from = new InternetAddress("testearca092@gmail.com", "Email de Teste");
             InternetAddress to = new InternetAddress(candidatura.getProfissional().getEmail());
             String subject = "Candidatura não aprovada";
             String body = "Sua candidatura para a vaga " + candidatura.getVaga().getDescricao() + " não foi aprovada.";
             emailService.send(from, to, subject, body);
-        } 
+        }
 
         return "redirect:/candidatura/listar/" + candidatura.getVaga().getId();
     }
 
     @PostMapping("/email")
     public String email(@RequestParam("id") Long id,
-            @RequestParam(value = "horarioEntrevista") LocalDateTime horarioEntrevista,
+            @RequestParam(value = "horarioEntrevista")  LocalDateTime horarioEntrevista,
             @RequestParam(value = "linkVideoconferencia") String linkVideoconferencia,
-            ModelMap model ) throws UnsupportedEncodingException, AddressException {
+            ModelMap model) throws UnsupportedEncodingException, AddressException {
 
         Candidatura candidatura = candidaturaService.buscarPorId(id);
         if (candidatura == null) {

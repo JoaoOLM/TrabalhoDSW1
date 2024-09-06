@@ -52,12 +52,12 @@ public class EmpresaController {
 	@PostMapping("/salvar")
 	public String salvar(@Valid Empresa empresa, BindingResult result, RedirectAttributes attr) {
 
-		empresa.setRole("ROLE_EMPRESA");
-		empresa.setPassword(encoder.encode(empresa.getPassword()));
-
 		if (result.hasErrors()) {
 			return "empresa/cadastro";
 		}
+
+		empresa.setRole("ROLE_EMPRESA");
+		empresa.setPassword(encoder.encode(empresa.getPassword()));
 
 		service.salvar(empresa);
 		attr.addFlashAttribute("sucess", "empresa.create.sucess");
@@ -72,15 +72,12 @@ public class EmpresaController {
 	
 	@PostMapping("/editar")
 	public String editar(@Valid Empresa empresa, BindingResult result, RedirectAttributes attr) {
-				
-		// if (result.getFieldErrorCount() > 1 || result.getFieldError("CNPJ") == null) {
-		// 	return "empresa/cadastro";
-		// }
-		empresa.setRole("ROLE_EMPRESA");
-
-		if (result.hasErrors()) {
+		
+		if (result.getFieldErrorCount() > 2 || result.getFieldError("CNPJ") == null || result.getFieldError("email") == null) {
 			return "empresa/cadastro";
 		}
+
+		empresa.setRole("ROLE_EMPRESA");
 
 		service.salvar(empresa);
 		attr.addFlashAttribute("sucess", "empresa.edit.sucess");
@@ -88,23 +85,14 @@ public class EmpresaController {
 	}
 	
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
-		// Buscar a empresa pelo ID
-		Empresa empresa = service.buscarPorId(id);
-    
-		// Verificar se a empresa tem vagas associadas
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, ModelMap model) {
 		if (service.empresaTemVagas(id)) {
-			// Deletar todas as vagas da empresa
-			service.excluirVagasPorEmpresa(empresa);
-			
-			// Excluir a empresa após deletar as vagas
-			service.excluir(id);
-			model.addAttribute("sucess", "empresa.delete.sucess");
+			model.addAttribute("fail", "empresa.delete.fail");
 		} else {
 			service.excluir(id);
 			model.addAttribute("sucess", "empresa.delete.sucess");
 		}
-		return listar(model);
+        return listar(model);
 	}
 
 	@GetMapping("/vagas") 

@@ -75,12 +75,7 @@ public class VagasController {
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-
-		System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n");
-		System.out.println("id da vaga1" + id);
 		Vaga vaga = service.buscarPorId(id);
-		System.out.println("id da vaga" + id);
-		System.out.println("vaga" + vaga.getDescricao());
 
         // Obtenha a empresa autenticada
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -104,10 +99,14 @@ public class VagasController {
 	}
 
 	@GetMapping("/excluir/{id}")
-    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
-        service.excluir(id);
-        attr.addFlashAttribute("sucess", "vagas.delete.sucess");
-        return "redirect:/empresa/vagas";
+    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, ModelMap model) {
+		if (service.vagaTemCandidaturas(id)) {
+			model.addAttribute("fail", "vagas.delete.fail");
+		} else {
+			service.excluir(id);
+			model.addAttribute("sucess", "vagas.delete.sucess");
+		}
+        return listar(model);
     }
 
 }

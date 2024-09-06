@@ -51,7 +51,7 @@
                             <!-- Ações visíveis apenas para profissional -->
                             <div sec:authorize="hasRole('ROLE_PROFISSIONAL')">
                                 <a th:href="@{/candidatura/excluir/{id}(id=${candidatura.id})}" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Tem certeza que deseja excluir esta vaga?');">
+                                onclick="return confirm('Tem certeza que deseja excluir esta candidatura?');">
                                 <span class="oi oi-trash" title="Excluir" aria-hidden="true"></span>
                             </a>
                             </div>

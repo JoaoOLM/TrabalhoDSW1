@@ -24,9 +24,7 @@
 
             <div th:replace="~{fragments/alert}"></div>
 
-            <form
-                th:action="${profissional.id == null} ? @{/profissional/salvar} : @{/profissional/editar}"
-                th:object="${profissional}" method="POST">
+            <form th:action="${profissional.id == null} ? @{/profissional/salvar} : @{/profissional/editar}" th:object="${profissional}" method="POST">
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -43,7 +41,7 @@
                     <div class="form-group col-md-6">
                         <label th:text="#{profissional.email.label}" for="email"></label> 
                         <input type="email" class="form-control" id="email" placeholder="email@example.com"
-                               th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? is-invalid" />
+                               th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? is-invalid" th:readonly="${profissional.id != null}"/>
                         
                         <div class="invalid-feedback">
                             <span th:errors="*{email}"></span>
@@ -105,9 +103,9 @@
                             <span th:errors="*{dataNascimento}"></span>
                         </div>
                     </div>
-
                 </div>
-
+                
+                <input type="hidden" id="role" th:field="*{role}" />
                 <input type="hidden" id="id" th:field="*{id}" />
                 <button type="submit" th:text="#{button.salvar.label}" class="btn btn-primary btn-sm"></button>
             </form>

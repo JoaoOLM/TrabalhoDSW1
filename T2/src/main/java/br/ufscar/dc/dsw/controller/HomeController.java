@@ -64,7 +64,7 @@ public class HomeController {
         Usuario usuario = getUsuarioAutenticado();
         String empresaLogada = SecurityContextHolder.getContext().getAuthentication().getName();
         
-        if (usuario.getRole().equals("ROLE_PROFISSIONAL")) {
+        if (usuario != null && usuario.getRole().equals("ROLE_PROFISSIONAL")) {
             vagasNC = vagaService.buscarVagasNaoCandidatadasPorProfissional(usuario.getId());
             if (cidade != null && !cidade.isEmpty()) {
                 vagas = vagaService.buscarPorCidade(cidade);
