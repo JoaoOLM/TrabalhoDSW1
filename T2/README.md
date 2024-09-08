@@ -32,44 +32,75 @@ Projeto desenvolvido para a matéria de Desenvolvimento de Software para Web 1 d
 - **Envio de emails para candidatos a uma vaga**
 - **Download de currículo para uma vaga**
 - **Disponibilidade do sistema em Inglês e Português-br**
+- **API REST para requisições**
 
 ## Dependências
 Requisitos para rodar o sistema
 1. [JDK](https://openjdk.java.net/)
 2. [Maven](https://maven.apache.org/)
 3. [MySQL](https://www.mysql.com/)
-4. [Tomcat](https://tomcat.apache.org/)
+5. [Spring-Boot](https://spring.io/projects/spring-boot)
 
 ## Como Rodar
 Para iniciar o projeto, siga as instruções abaixo:
 
-1. Abra um terminal no diretório raiz e entre no mysql.
+1. Abra um terminal no diretório raiz e execute o seguinte comando.
    ```bash
-   mysql -uroot -p
-   ```
-2. Após inserir sua senha gere o banco de dados.
-   ```bash
-   source db/MySQL/create.db
-   ```
-4. Inicie o tomcat.
-    - Windows
-   ```bash
-   cd SUA_INSTALAÇÂO_TOMCAT/bin
-   ./startup.bat
-   ```
-   -Linux/Mac
-    ```bash
-   cd SUA_INSTALAÇÂO_TOMCAT/bin
-   export JAVA_HOME="/<caminho_para_java>/jreXXX"
-   ./startup.sh
-   ```
-5. Inicie o servidor.
-   ```bash
-   mvn tomcat7:redeploy
+   mvn spring-boot:run
    ```
 
-O frontend agora estará acessível em [http://localhost:8080/Estagio/index.jsp](http://localhost:8080/Estagio/index.jsp).
+O frontend agora estará acessível em [http://localhost:8080/](http://localhost:8080/).
 
+## Endpoints da API
+
+### REST API -- CRUD de profissionais  
+Cria um novo profissional [Create - CRUD]  
+POST http://localhost:8080/api/profissionais  
+Body: raw/JSON (application/json)  
+
+Retorna a lista de profissionais [Read - CRUD]  
+GET http://localhost:8080/api/profissionais  
+
+Retorna o profissional de id = {id} [Read - CRUD]  
+GET http://localhost:8080/api/profissionais/{id}  
+
+Atualiza o profissional de id = {id} [Update - CRUD]  
+PUT http://localhost:8080/api/profissionais/{id}  
+Body: raw/JSON (application/json)  
+
+Remove o profissional de id = {id} [Delete - CRUD]  
+DELETE http://localhost:8080/api/profissionais/{id}  
+
+### REST API -- CRUD de empresas  
+Cria uma nova empresa [Create - CRUD]  
+POST http://localhost:8080/api/empresas  
+Body: raw/JSON (application/json)  
+
+Retorna a lista de empresas [Read - CRUD]  
+GET http://localhost:8080/api/empresas  
+
+Retorna a empresa de id = {id} [Read - CRUD]  
+GET http://localhost:8080/api/empresas/{id}  
+
+Retorna a lista de todas as empresas da cidade de nome = {nome}  
+GET http://localhost:8080/api/empresas/cidades/{nome}  
+
+Atualiza a empresa de id = {id} [Update - CRUD]  
+PUT http://localhost:8080/api/empresas/{id}  
+Body: raw/JSON (application/json)  
+ 
+Remove a empresa de id = {id} [Delete - CRUD]  
+DELETE http://localhost:8080/api/empresas/{id}  
+
+### REST API -- Endpoints de Vagas  
+Retorna a lista de vagas [Read - CRUD]  
+GET http://localhost:8080/api/vagas  
+
+Retorna a vaga de id = {id} [Read - CRUD]  
+GET http://localhost:8080/api/vagas/{id}  
+
+Retorna a lista de vagas (em aberto) da empresa de id = {id} [Read - CRUD]  
+GET http://localhost:8080/api/vagas/empresas/{id}  
 
 ## Contato
 
