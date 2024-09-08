@@ -29,7 +29,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label th:text="#{profissional.nome.label}" for="nome"></label> 
-                        <input type="text" class="form-control" id="nome" placeholder="Nome"
+                        <input type="text" class="form-control" id="nome" placeholder="#{profissional.nome.label}"
                                autofocus="autofocus" th:field="*{nome}"
                                th:classappend="${#fields.hasErrors('nome')} ? is-invalid" />
                         

@@ -237,7 +237,7 @@ public class CandidaturaController {
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
         candidaturaService.excluir(id);
-        attr.addFlashAttribute("success", "Candidatura excluída com sucesso.");
+        attr.addFlashAttribute("success", "candidatura.delete.sucess");
         return "redirect:/candidatura/listar";
     }
 }

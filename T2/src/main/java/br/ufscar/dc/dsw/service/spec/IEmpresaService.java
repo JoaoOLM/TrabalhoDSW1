@@ -19,4 +19,6 @@ public interface IEmpresaService {
 	void excluirVagasPorEmpresa(Empresa empresa);
 
 	List<String> buscarTodasCidades();
+
+	List<Empresa> buscarPorCidade(String cidade);
 }

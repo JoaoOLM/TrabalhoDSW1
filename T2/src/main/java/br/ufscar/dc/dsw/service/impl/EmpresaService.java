@@ -56,4 +56,9 @@ public class EmpresaService implements IEmpresaService {
 	public List<String> buscarTodasCidades() {
 		return dao.findDistinctCidades();
 	}
+
+	@Transactional(readOnly = true)
+	public List<Empresa> buscarPorCidade(String cidade) {
+		return dao.findByCidade(cidade);
+	}
 }

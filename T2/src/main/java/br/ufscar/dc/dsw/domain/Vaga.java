@@ -1,5 +1,11 @@
 package br.ufscar.dc.dsw.domain;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,10 +17,6 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
-import java.sql.Date;
-import java.sql.Timestamp;
-
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "Vaga")
@@ -23,6 +25,7 @@ public class Vaga extends AbstractEntity<Long> {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empresa_id", nullable = false)
+    @JsonBackReference
     private Empresa empresa;
 
     @NotBlank

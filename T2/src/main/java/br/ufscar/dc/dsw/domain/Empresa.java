@@ -2,6 +2,8 @@ package br.ufscar.dc.dsw.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import br.ufscar.dc.dsw.validation.UniqueCNPJ;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +31,7 @@ public class Empresa extends Usuario {
     private String cidade;
 
     @OneToMany(mappedBy = "empresa")
+    @JsonManagedReference
 	private List<Vaga> vagas;
 
     public Empresa() {

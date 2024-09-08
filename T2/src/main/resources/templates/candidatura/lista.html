@@ -24,12 +24,12 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Profissional</th>
-                        <th>Vaga</th>
-                        <th>Data de Inscrição</th>
-                        <th>Arquivo</th>
-                        <th>Status</th>
-                        <th>Ações</th>
+                        <th th:text="#{candidatura.profissional.label}">Profissional</th>
+                        <th th:text="#{candidatura.vaga.label}">Vaga</th>
+                        <th th:text="#{candidatura.dataInscricao.label}">Data de Inscrição</th>
+                        <th th:text="#{candidatura.arquivo.label}">Arquivo</th>
+                        <th th:text="#{candidatura.status.label}">Status</th>
+                        <th th:text="#{candidatura.acoes.label}">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,9 +51,7 @@
                             <!-- Ações visíveis apenas para profissional -->
                             <div sec:authorize="hasRole('ROLE_PROFISSIONAL')">
                                 <a th:href="@{/candidatura/excluir/{id}(id=${candidatura.id})}" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Tem certeza que deseja excluir esta candidatura?');">
-                                <span class="oi oi-trash" title="Excluir" aria-hidden="true"></span>
-                            </a>
+                                onclick="return confirm('#{candidatura.confirmacaoExclusao}');">
                             </div>
                         </td>
                     </tr>

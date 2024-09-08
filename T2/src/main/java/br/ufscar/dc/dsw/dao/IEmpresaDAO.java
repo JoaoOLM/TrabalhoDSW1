@@ -22,4 +22,6 @@ public interface IEmpresaDAO extends CrudRepository<Empresa, Long>{
 
 	@Query("SELECT DISTINCT e.cidade FROM Empresa e")
 	List<String> findDistinctCidades();
+
+	List<Empresa> findByCidade(String cidade);
 }
