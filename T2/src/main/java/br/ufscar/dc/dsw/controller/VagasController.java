@@ -92,7 +92,10 @@ public class VagasController {
 
 	@PostMapping("/editar")
 	public String editar(@Valid Vaga vaga, BindingResult result, RedirectAttributes attr) {
-
+		if (result.hasErrors()) {
+            System.out.println(result);
+			return "vagas/cadastro";
+		}
 		service.salvar(vaga);
 		attr.addFlashAttribute("success", "vagas.edit.sucess");
 		return "redirect:/empresa/vagas";
