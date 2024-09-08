@@ -7,7 +7,7 @@
                     <th>#</th>
                     <th th:text="#{vaga.descricao}"></th>
                     <th th:text="#{vaga.remuneracao}"></th>
-                    <th th:text="#{vaga.datalimiteInscricao}"></th>
+                    <th th:text="#{vaga.dataLimiteInscricao}"></th>
                     <th th:text="#{vaga.empresa}"></th>
                     <th th:text="#{empresa.cidade.label}"></th>
                     <th th:text="#{acao.label}"></th>
@@ -24,6 +24,9 @@
                     <td>
                         <!-- Ações visíveis apenas se a vaga pertencer à empresa logada -->
                         <div sec:authorize="hasRole('ROLE_EMPRESA')" th:if="${vaga.empresa.email == empresaLogada}">
+                            <a th:href="@{/candidatura/listar/{id}(id=${vaga.id})}" class="btn btn-info btn-sm">
+                                <span class="oi oi-list" title="Listar" aria-hidden="true"></span>
+                            </a>
                             <a th:href="@{/vagas/editar/{id}(id=${vaga.id})}" class="btn btn-warning btn-sm">
                                 <span class="oi oi-pencil" title="Editar" aria-hidden="true"></span>
                             </a>
@@ -34,7 +37,7 @@
                         </div>
                         <!-- Botão para candidatar-se visível apenas para profissionais -->
                         <div sec:authorize="hasRole('ROLE_PROFISSIONAL')">
-                            <a th:href="@{/vagas/candidatar/{id}(id=${vaga.id})}" class="btn btn-success btn-sm">
+                            <a th:href="@{/candidatura/cadastrar/{id}(id=${vaga.id})}" class="btn btn-success btn-sm">
                                 <span class="oi oi-check" title="Candidatar-se" aria-hidden="true"></span>
                                 <span th:text="#{vaga.candidatar.label}">Candidatar-se</span>
                             </a>

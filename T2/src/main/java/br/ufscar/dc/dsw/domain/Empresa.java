@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.domain;
 
 import java.util.List;
 
+import br.ufscar.dc.dsw.validation.UniqueCNPJ;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -16,6 +17,7 @@ public class Empresa extends Usuario {
     @NotBlank
     @Column(nullable = false, length = 18, unique = true)
     @Size(min = 18, max = 18, message = "{Size.empresa.CNPJ}")
+    @UniqueCNPJ (message = "{Unique.empresa.CNPJ}")
     private String CNPJ;
 
     @NotBlank

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <section class="layout-content" layout:fragment="corpo">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <i class="oi oi-caret-right"></i>
+                        <span th:text="#{candidatura.edicao.label}"></span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            <div class="mb-4 border-bottom pb-2">
+                <h2 th:text="${candidatura.profissional.nome}"></h2>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4 th:text="${candidatura.profissional.cpf}"></h4>
+                    <h4 th:text="${candidatura.profissional.telefone}"></h4>
+                    <h4 th:text="${candidatura.profissional.sexo}"></h4>
+                    <h4 th:text="${candidatura.profissional.dataNascimento}"></h4>
+                    <h4>
+                        <a th:href="@{/candidatura/download/{id} (id=${candidatura.id}) }"
+                            th:text="#{candidatura.file.label}"></a>
+                    </h4>
+                    <h4 th:text="${candidatura.dataCandidatura}"></h4>
+                </div>
+            </div>
+            
+            <form th:action="@{/candidatura/editar}" th:object="${candidatura}" method="POST">
+                <!-- Campos ocultos -->
+                <input type="hidden" name="id" th:value="${candidatura.id}" />
+                
+                <div class="form-group">
+                    <label th:text="#{candidatura.status.label}" for="status">Status da Candidatura:</label>
+                    <select class="form-control" id="status" name="status" required>
+                        <option value="ABERTO" th:text="#{candidatura.status.aberto}" 
+                                th:selected="${candidatura.status == 'ABERTO'}"></option>
+                        <option value="ENTREVISTA" th:text="#{candidatura.status.entrevista}" 
+                                th:selected="${candidatura.status == 'ENTREVISTA'}"></option>
+                        <option value="NAO_SELECIONADO" th:text="#{candidatura.status.naoSelecionado}" 
+                                th:selected="${candidatura.status == 'NAO_SELECIONADO'}"></option>
+                    </select>
+                </div>
+
+                
+
+                <button th:text="#{button.salvar.label}" type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>

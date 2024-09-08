@@ -34,4 +34,5 @@ public class ProfissionalService implements IProfissionalService {
 	public List<Profissional> buscarTodos() {
 		return dao.findAll();
 	}
+	
 }

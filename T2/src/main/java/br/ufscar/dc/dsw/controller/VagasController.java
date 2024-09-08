@@ -18,6 +18,7 @@ import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 import br.ufscar.dc.dsw.service.spec.IEmpresaService;
+import br.ufscar.dc.dsw.service.spec.IUsuarioService;
 import br.ufscar.dc.dsw.service.spec.IVagaService;
 import jakarta.validation.Valid;
 
@@ -34,6 +35,9 @@ public class VagasController {
 
     @Autowired
 	private IEmpresaService empresaService;
+
+	@Autowired
+	private IUsuarioService usuarioService;
 
 	private Empresa getEmpresa(){
         UsuarioDetails usuarioDetails = (UsuarioDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -52,6 +56,7 @@ public class VagasController {
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
 		//fazer metodo para listar todas as abertas
+		
 
 		return "vagas/lista";
 	}
@@ -70,19 +75,14 @@ public class VagasController {
 
 	@GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-
-		System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n");
-		System.out.println("id da vaga1" + id);
 		Vaga vaga = service.buscarPorId(id);
-		System.out.println("id da vaga" + id);
-		System.out.println("vaga" + vaga.getDescricao());
 
         // Obtenha a empresa autenticada
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Empresa empresaAutenticada = empresaService.buscarPorEmail(auth.getName());
+        Usuario usuarioAutenticado = usuarioService.buscarPorEmail(auth.getName());
 
         // Verifique se a empresa autenticada é a proprietária da vaga
-        if (vaga.getEmpresa().getId().equals(empresaAutenticada.getId())) {
+        if (vaga.getEmpresa().getId().equals(usuarioAutenticado.getId())) {
             model.addAttribute("vaga", vaga);
             return "vagas/cadastro";
         } else {
@@ -99,10 +99,14 @@ public class VagasController {
 	}
 
 	@GetMapping("/excluir/{id}")
-    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
-        service.excluir(id);
-        attr.addFlashAttribute("sucess", "vagas.delete.sucess");
-        return "redirect:/empresa/vagas";
+    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, ModelMap model) {
+		if (service.vagaTemCandidaturas(id)) {
+			model.addAttribute("fail", "vagas.delete.fail");
+		} else {
+			service.excluir(id);
+			model.addAttribute("sucess", "vagas.delete.sucess");
+		}
+        return listar(model);
     }
 
 }

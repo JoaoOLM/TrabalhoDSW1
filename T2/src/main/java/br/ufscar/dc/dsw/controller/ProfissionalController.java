@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufscar.dc.dsw.domain.Profissional;
+import br.ufscar.dc.dsw.service.spec.ICandidaturaService;
 import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 import jakarta.validation.Valid;
 
@@ -21,6 +22,9 @@ public class ProfissionalController {
 
     @Autowired
     private IProfissionalService profissionalService;
+
+    @Autowired
+    private ICandidaturaService candidaturaService;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -39,12 +43,12 @@ public class ProfissionalController {
     @PostMapping("/salvar")
     public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr) {
 
-        profissional.setRole("ROLE_PROFISSIONAL");
-        profissional.setPassword(encoder.encode(profissional.getPassword()));
-
         if (result.hasErrors()) {
             return "profissional/cadastro";
         }
+
+        profissional.setRole("ROLE_PROFISSIONAL");
+        profissional.setPassword(encoder.encode(profissional.getPassword()));
 
         profissionalService.salvar(profissional);
         attr.addFlashAttribute("sucess", "profissional.create.sucess");
@@ -53,18 +57,24 @@ public class ProfissionalController {
 
     @GetMapping("/editar/{id}")
     public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-        model.addAttribute("profissional", profissionalService.buscarPorId(id));
+        Profissional profissional = profissionalService.buscarPorId(id);
+        if (profissional == null){
+            model.addAttribute("error", "Profissional não encontrado.");
+            return "redirect:/error";
+        }
+
+        model.addAttribute("profissional", profissional);
         return "profissional/cadastro";
     }
 
     @PostMapping("/editar")
     public String editar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr) {
+        
+        if (result.getFieldErrorCount() > 2 || result.getFieldError("cpf") == null || result.getFieldError("email") == null) {
+			return "profissional/cadastro";
+		}
 
         profissional.setRole("ROLE_PROFISSIONAL");
-
-        if (result.hasErrors()) {
-            return "profissional/cadastro";
-        }
 
         profissionalService.salvar(profissional);
         attr.addFlashAttribute("sucess", "profissional.edit.sucess");
@@ -72,9 +82,13 @@ public class ProfissionalController {
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
-        profissionalService.excluir(id);
-        attr.addFlashAttribute("sucess", "profissional.delete.sucess");
-        return "redirect:/profissional/listar";
+    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr, ModelMap model) {
+        if (!candidaturaService.buscarPorProfissional(profissionalService.buscarPorId(id)).isEmpty()) {
+			model.addAttribute("fail", "profissional.delete.fail");
+		} else {
+			profissionalService.excluir(id);
+			model.addAttribute("sucess", "profissional.delete.sucess");
+		}
+        return listar(model);
     }
 }

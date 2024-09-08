@@ -34,4 +34,9 @@ public class UsuarioService implements IUsuarioService {
 	public List<Usuario> buscarTodos() {
 		return dao.findAll();
 	}
+
+	@Transactional(readOnly = true)
+	public Usuario buscarPorEmail(String email) {
+		return dao.findByEmail(email);
+	}
 }

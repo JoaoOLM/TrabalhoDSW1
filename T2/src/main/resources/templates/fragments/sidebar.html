@@ -72,6 +72,17 @@
 				</a></li>
 			</ul>
 		</div>
+
+		<div sec:authorize="hasRole('ROLE_PROFISSIONAL')">
+			<ul class="nav nav-pills">
+				<li class="nav-item"><span class="nav-link active"
+					th:text="#{sidebar.titulo.candidatura}"></span></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/candidatura/listar}"> <i class="oi oi-plus"></i> <span
+						th:text="#{sidebar.link.listar}"></span>
+				</a></li>
+			</ul>
+		</div>
 	</nav>
 </body>
 </html>

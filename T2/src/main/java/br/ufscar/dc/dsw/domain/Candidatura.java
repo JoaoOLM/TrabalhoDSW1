@@ -1,10 +1,20 @@
 package br.ufscar.dc.dsw.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,9 +37,10 @@ public class Candidatura extends AbstractEntity<Long> {
     @JoinColumn(name = "profissional_id", nullable = false)
     private Profissional profissional;
 
-    @NotBlank
-    @Column(nullable = false, length = 255)
-    private String arquivoCurriculo;
+    @Lob
+    @Basic
+    @Column(length = 10485760) // 10MB
+    private byte[] arquivoCurriculo;
 
     @NotNull
     @Column(nullable = false)
@@ -40,27 +51,35 @@ public class Candidatura extends AbstractEntity<Long> {
     @Column(nullable = false, length = 20)
     private Status status = Status.ABERTO;
 
-    // Construtores
+    @FutureOrPresent
+    @Column(nullable = true)
+    private LocalDateTime horarioEntrevista;
 
+    @Column(nullable = true, length = 100)
+    private String linkVideoconferencia;
+
+    // Construtor padrão
     public Candidatura() {
+        this.dataCandidatura = new Timestamp(System.currentTimeMillis());
+        this.status = Status.ABERTO;
     }
 
-    public Candidatura(Vaga vaga, Profissional profissional, String arquivoCurriculo) {
+    // Construtor completo
+    public Candidatura(Vaga vaga, Profissional profissional, byte[] arquivoCurriculo) {
+        this();
         this.vaga = vaga;
         this.profissional = profissional;
         this.arquivoCurriculo = arquivoCurriculo;
     }
 
-    public Candidatura(Vaga vaga, Profissional profissional, String arquivoCurriculo, Timestamp dataCandidatura, Status status) {
-        this.vaga = vaga;
-        this.profissional = profissional;
-        this.arquivoCurriculo = arquivoCurriculo;
-        this.dataCandidatura = dataCandidatura;
+    public Candidatura(Vaga vaga, Profissional profissional, byte[] arquivoCurriculo, Status status, LocalDateTime horarioEntrevista, String linkVideoconferencia) {
+        this(vaga, profissional, arquivoCurriculo);
         this.status = status;
+        this.horarioEntrevista = horarioEntrevista;
+        this.linkVideoconferencia = linkVideoconferencia;
     }
 
     // Getters e Setters
-
     public Vaga getVaga() {
         return vaga;
     }
@@ -77,11 +96,11 @@ public class Candidatura extends AbstractEntity<Long> {
         this.profissional = profissional;
     }
 
-    public String getArquivoCurriculo() {
+    public byte[] getArquivoCurriculo() {
         return arquivoCurriculo;
     }
 
-    public void setArquivoCurriculo(String arquivoCurriculo) {
+    public void setArquivoCurriculo(byte[] arquivoCurriculo) {
         this.arquivoCurriculo = arquivoCurriculo;
     }
 
@@ -99,5 +118,21 @@ public class Candidatura extends AbstractEntity<Long> {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public LocalDateTime getHorarioEntrevista() {
+        return horarioEntrevista;
+    }
+
+    public void setHorarioEntrevista(LocalDateTime horarioEntrevista) {
+        this.horarioEntrevista = horarioEntrevista;
+    }
+
+    public String getLinkVideoconferencia() {
+        return linkVideoconferencia;
+    }
+
+    public void setLinkVideoconferencia(String linkVideoconferencia) {
+        this.linkVideoconferencia = linkVideoconferencia;
     }
 }

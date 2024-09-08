@@ -8,8 +8,6 @@ public interface IEmpresaService {
 
 	Empresa buscarPorId(Long id);
 
-	Empresa buscarPorEmail(String email);
-
 	List<Empresa> buscarTodos();
 
 	void salvar(Empresa empresa);

@@ -31,14 +31,14 @@ public class EstagioMvcApplication {
 
             Usuario u1 = new Usuario();
             u1.setEmail("admin@admin.com");
-            u1.setPassword(encoder.encode("admin"));
+            u1.setPassword(encoder.encode("teste"));
             u1.setNome("Administrador");
             u1.setRole("ROLE_ADMIN");
             usuarioDAO.save(u1);
 
             Empresa e1 = new Empresa();
             e1.setEmail("empresa@empresa.com");
-            e1.setPassword(encoder.encode("empresa"));
+            e1.setPassword(encoder.encode("teste"));
             e1.setNome("Empresa1");
             e1.setRole("ROLE_EMPRESA");
             e1.setCNPJ("00.000.000/0000-00");
@@ -63,7 +63,7 @@ public class EstagioMvcApplication {
 
             Empresa e2 = new Empresa();
             e2.setEmail("empresa2@empresa.com");
-            e2.setPassword(encoder.encode("empresa"));
+            e2.setPassword(encoder.encode("teste"));
             e2.setNome("Empresa2");
             e2.setRole("ROLE_EMPRESA");
             e2.setCNPJ("11.111.111/1111-11");
@@ -88,15 +88,22 @@ public class EstagioMvcApplication {
 
             Profissional p1 = new Profissional();
             p1.setEmail("profissional@profissional.com");
-            p1.setPassword(encoder.encode("profissional"));
+            p1.setPassword(encoder.encode("teste"));
             p1.setNome("Profissional1");
             p1.setRole("ROLE_PROFISSIONAL");
             p1.setCpf("000.000.000-00");
             p1.setTelefone("(00) 00000-0000");
             p1.setSexo(Sexo.FEMININO);
-            p1.setDataNascimento("0001-01-01");
+            // Definindo a data limite de inscrição usando SimpleDateFormat
+            sdf = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date utilDate = sdf.parse("01-01-0001");
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Convertendo java.util.Date para java.sql.Date
+                p1.setDataNascimento(sqlDate);
+            } catch (ParseException e) {
+                e.printStackTrace(); // Trate a exceção conforme necessário
+            }
             usuarioDAO.save(p1);
-
         };
     }
 }

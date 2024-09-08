@@ -1,10 +1,14 @@
 package br.ufscar.dc.dsw.domain;
 
+import java.sql.Date;
+
+import br.ufscar.dc.dsw.validation.UniqueCPF;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("serial")
@@ -19,6 +23,7 @@ public class Profissional extends Usuario {
     @NotBlank
     @Column(nullable = false, length = 14, unique = true)
     @Size(min = 14, max = 14, message = "{Size.profissional.CPF}")
+    @UniqueCPF (message = "{Unique.profissional.CPF}")
     private String cpf;
 
     @NotBlank
@@ -31,9 +36,9 @@ public class Profissional extends Usuario {
     private Sexo sexo;
 
     @NotNull
-    @Column(nullable = false, length = 10)
-    @Size(min = 10, max = 10, message = "{Size.profissional.dataNascimento}")
-    private String dataNascimento;
+    @Past
+    @Column(nullable = false)
+    private Date dataNascimento;
 
     public Profissional() {
     }
@@ -42,7 +47,7 @@ public class Profissional extends Usuario {
         super.setId(id);
     }
 
-    public Profissional(String email, String nome, String password, String role, String cpf, String telefone, Sexo sexo, String dataNascimento) {
+    public Profissional(String email, String nome, String password, String role, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
         super(email, nome, password, role);
         this.cpf = cpf;
         this.telefone = telefone;
@@ -50,7 +55,7 @@ public class Profissional extends Usuario {
         this.dataNascimento = dataNascimento;
     }
 
-    public Profissional(Long id, String email, String nome, String password, String role, String cpf, String telefone, Sexo sexo, String dataNascimento) {
+    public Profissional(Long id, String email, String nome, String password, String role, String cpf, String telefone, Sexo sexo, Date dataNascimento) {
         super(id, email, nome, password, role);
         this.cpf = cpf;
         this.telefone = telefone;
@@ -84,11 +89,11 @@ public class Profissional extends Usuario {
         this.sexo = sexo;
     }
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }
