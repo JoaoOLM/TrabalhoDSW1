@@ -102,6 +102,52 @@ GET http://localhost:8080/api/vagas/{id}
 Retorna a lista de vagas (em aberto) da empresa de id = {id} [Read - CRUD]  
 GET http://localhost:8080/api/vagas/empresas/{id}  
 
+## Usuários Criados
+
+### 1. **Administrador**
+- **Email**: `admin@admin.com`
+- **Senha**: `teste` (criptografada com `BCrypt`)
+- **Nome**: Administrador
+- **Papel (Role)**: `ROLE_ADMIN`
+  
+### 2. **Empresa1**
+- **Email**: `empresa@empresa.com`
+- **Senha**: `teste` (criptografada com `BCrypt`)
+- **Nome**: Empresa1
+- **Papel (Role)**: `ROLE_EMPRESA`
+- **CNPJ**: 00.000.000/0000-00
+- **Cidade**: Água Boa
+- **Descrição**: Melhor empresa do mundo
+  
+#### Vaga Criada para Empresa1
+- **Descrição**: FullStack
+- **Remuneração**: R$ 1000,00
+- **Data Limite de Inscrição**: 10-02-2028
+  
+### 3. **Empresa2**
+- **Email**: `empresa2@empresa.com`
+- **Senha**: `teste` (criptografada com `BCrypt`)
+- **Nome**: Empresa2
+- **Papel (Role)**: `ROLE_EMPRESA`
+- **CNPJ**: 11.111.111/1111-11
+- **Cidade**: Brasília
+- **Descrição**: Empresa de aviação nacional
+  
+#### Vaga Criada para Empresa2
+- **Descrição**: Analista de dados
+- **Remuneração**: R$ 500,00
+- **Data Limite de Inscrição**: 15-04-2025
+
+### 4. **Profissional1**
+- **Email**: `profissional@profissional.com`
+- **Senha**: `teste` (criptografada com `BCrypt`)
+- **Nome**: Profissional1
+- **Papel (Role)**: `ROLE_PROFISSIONAL`
+- **CPF**: 000.000.000-00
+- **Telefone**: (00) 00000-0000
+- **Sexo**: Feminino
+- **Data de Nascimento**: 01-01-0001
+
 ## Requisitos 
 
 Os requisitos para o sistema podem ser verificiados em [Requisitos-A2](Requisitos-A2.pdf) e [Requisitos-A3](Requisitos-A3.pdf)
