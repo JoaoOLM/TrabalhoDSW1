@@ -102,6 +102,65 @@ GET http://localhost:8080/api/vagas/{id}
 Retorna a lista de vagas (em aberto) da empresa de id = {id} [Read - CRUD]  
 GET http://localhost:8080/api/vagas/empresas/{id}  
 
+## Requisitos 
+
+Os requisitos para o sistema podem ser verificiados em [Requisitos-A2](Requisitos-A2.pdf) e [Requisitos-A3](Requisitos-A3.pdf)
+
+CRUD para T3: 
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R1:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (100%)
+
+R2:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (100%)
+
+R3:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R4:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado   
+Divisão na implementação da funcionalidade: JoaoOLM (100%)
+
+R5:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R6:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R7:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R8:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JoaoOLM (100%)
+
+R9:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JaksonHZ (50%), JoaoOLM (50%)
+
+R10:
+
+(X) Implementado ( ) Parcialmente implementado ( ) Não implementado  
+Divisão na implementação da funcionalidade: JoaoOLM (100%)
+
 ## Contato
 
 Se você tiver alguma dúvida, sugestão ou precisar de suporte, por favor, sinta-se à vontade para entrar em contato conosco:
